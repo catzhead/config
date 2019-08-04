@@ -171,3 +171,9 @@ To take the changes into account:
 ```
 powerline-daemon --replace
 ```
+
+# ssh
+
+## Problems with characters
+
+In the remote environment, set TERM to rxvt-256color
