@@ -127,3 +127,9 @@ trust xx:xx:xx..
 connect xx:xx:xx..
 scan off
 ```
+
+# Log files
+
+* systemctl --failed
+* journalctl
+* xorg: ~/.local/share/xorg/Xorg.<display>.log
