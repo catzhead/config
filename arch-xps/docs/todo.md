@@ -1,11 +1,11 @@
 * spotify
-* powerline git
 
 done
 ====
 * powerline different if urxvt or not
 * audio keys
 * audio bluetooth
+* powerline git
 
 cancelled
 =========
