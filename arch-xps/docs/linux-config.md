@@ -133,3 +133,41 @@ scan off
 * systemctl --failed
 * journalctl
 * xorg: ~/.local/share/xorg/Xorg.<display>.log
+
+# Powerline
+
+```
+pacman -S powerline powerline-fonts
+git clone git@github.com:powerline/fonts.git
+cd fonts
+install
+```
+
+In urxvt, use patched font:
+```
+URxvt.font:	 xft:Inconsolata\ for\ powerline:pixelsize=17
+```
+
+Warning: documentation says that configuration files are merged, it does not seem to be the case in arch...
+
+set XDG_CONFIG_HOME to ~/.config
+
+Retrieve /usr/lib/python3.7/site-packages/powerline/config_files into ~/.config/powerline
+Change the shell theme to default_leftonly (bash does not support right-hand prompt)
+
+To configure cwd, copy /usr/lib/python3.7/site-packages/powerline/config_files/themes/shell/__main__.json into ~/.config/powerline/themes/shell and change:
+
+```
+		"cwd": {
+			"args": {
+				"dir_limit_depth": 1,
+        "ellipsis": null
+			}
+		}
+```
+
+To take the changes into account:
+
+```
+powerline-daemon --replace
+```
