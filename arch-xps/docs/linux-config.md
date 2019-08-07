@@ -85,6 +85,25 @@ pacman -S powertop
 
 In "tunables", each item can be toggled
 
+## Sleep
+
+Seems that there is a problem with sleep mode on XPS, add the following parameter to GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub:
+
+```
+mem_sleep_default=deep
+```
+
+like:
+
+```
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet mem_sleep_default=deep resume=PARTUUID=bbba9765-4af4-cd44-9d14-89cbd847476b"
+```
+
+and regenerate the config:
+
+```
+grub-mkconfig -o /boot/grub/grub.cfg
+
 # Audio
 
 ```
@@ -158,12 +177,12 @@ Change the shell theme to default_leftonly (bash does not support right-hand pro
 To configure cwd, copy /usr/lib/python3.7/site-packages/powerline/config_files/themes/shell/__main__.json into ~/.config/powerline/themes/shell and change:
 
 ```
-		"cwd": {
-			"args": {
-				"dir_limit_depth": 1,
-        "ellipsis": null
-			}
-		}
+"cwd": {
+  "args": {
+    "dir_limit_depth": 1,
+    "ellipsis": null
+   }
+}
 ```
 
 To take the changes into account:
