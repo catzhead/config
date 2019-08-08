@@ -1,2 +1,5 @@
-URxvt.font:	 xft:Inconsolata\ for\ powerline:pixelsize=17
+URxvt.font:	 xft:Inconsolata:size=12:antialias=true
 URxvt.scrollBar: false
+URxvt.perl-ext-common: keyboard-select
+URxvt.keysym.M-Escape: keyboard-select:activate
+URxvt.keyboard-select.clipboard: true
