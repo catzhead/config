@@ -17,4 +17,6 @@ XDG_CONFIG_HOME=$HOME/.config
 alias ls='ls --color=auto'
 alias vi='vim'
 alias clipboard='xclip -o | xclip -selection clipboard -i'
-PS1='\033[1m$\033[0m '
+alias mountdocode='sshfs digitalocean:/home/catzhead/code ~/do/code'
+alias unmountdocode='fusermount3 -u ~/do/code'
+PS1="\[$(tput bold)\]\\$\[$(tput sgr0)\] "
