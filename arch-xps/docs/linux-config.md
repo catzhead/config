@@ -103,6 +103,7 @@ and regenerate the config:
 
 ```
 grub-mkconfig -o /boot/grub/grub.cfg
+```
 
 # Audio
 
