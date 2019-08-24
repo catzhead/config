@@ -15,8 +15,11 @@ XDG_CONFIG_HOME=$HOME/.config
 #fi
 
 alias ls='ls --color=auto'
-alias vi='vim'
+alias vi='gvim'
 alias clipboard='xclip -o | xclip -selection clipboard -i'
 alias mountdocode='sshfs digitalocean:/home/catzhead/code ~/do/code'
 alias unmountdocode='fusermount3 -u ~/do/code'
+alias kbde='setxkbmap de'
+alias kbus='setxkbmap us'
+alias play='ffplay -loglevel quiet'
 PS1="\[$(tput bold)\]\\$\[$(tput sgr0)\] "

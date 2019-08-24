@@ -32,14 +32,15 @@ call plug#end()
   set cc=80
 
 " Style
-"  set t_Co=256
   set background=light
-  " colorscheme soft-morning
-  colorscheme catz
   if has("gui_running")
+    set t_Co=256
+    colorscheme soft-stone
     set termguicolors
-    set guifont=Inconsolata\ 13
-    set guioptions-=L  "remove left-hand scroll bar
+    set guifont=Inconsolata\ 12
+    set guioptions+=lrbmTLce
+    set guioptions-=lrbmTLce
+    set guioptions+=c
   endif
 
 " Highlight search and use C-l to disable highlighting until the next search
@@ -48,6 +49,9 @@ call plug#end()
 
 " Open new split in the correct direction
   set splitbelow splitright
+
+" Force N lines when reaching the top or the bottom of the screen
+  set so=7
 
 " Navigation without C-w first
   nnoremap <C-h> <C-w>h
@@ -65,9 +69,9 @@ call plug#end()
 	autocmd BufWritePre * %s/\s\+$//e
 
 " Remap clipboard copy-paste keys
-  vnoremap <leader>y "*y
-  vnoremap <leader>d "*d
-  nnoremap <leader>p "*p
+  vnoremap <leader>y "+y
+  vnoremap <leader>d "+d
+  nnoremap <leader>p "+p
 
 " Experimental stuff " Use <F11> to toggle between paste and nopaste set pastetoggle=<F11>
 
@@ -82,8 +86,3 @@ call plug#end()
 
 " Disable the autoindent
   filetype indent off
-
-" gvim stuff
-  set guioptions-=m  "menu bar
-  set guioptions-=T  "toolbar
-  set guioptions-=r  "scrollbar

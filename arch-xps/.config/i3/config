@@ -150,12 +150,10 @@ mode "resize" {
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
         bindsym l resize grow width 10 px or 10 ppt
-
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Shift+h resize shrink width 50 px or 50 ppt
+        bindsym Shift+j resize grow height 50 px or 50 ppt
+        bindsym Shift+k resize shrink height 50 px or 50 ppt
+        bindsym Shift+l resize grow width 50 px or 50 ppt
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -169,6 +167,10 @@ mode "movefloat" {
   bindsym j move down 20px
   bindsym h move left 20px
   bindsym l move right 20px
+  bindsym Shift+k move up 50px
+  bindsym Shift+j move down 50px
+  bindsym Shift+h move left 50px
+  bindsym Shift+l move right 50px
   bindsym Escape mode "default"
   bindsym $mod+m mode "default"
   bindsym $mod+r mode "resize"
@@ -177,15 +179,23 @@ mode "movefloat" {
 bindsym $mod+r mode "resize"
 bindsym $mod+m mode "movefloat"
 
+# Set the color of the child_border and indicator
+# class        border  backgr. text    indicator child_border
+client.focused #ffffff #000000 #ffffff #666666   #cccccc
+
+# Hide borders when there is only one window in the workspace
+hide_edge_borders smart
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status -c /home/catzhead/.config/i3/i3status.conf
+  font pango:Inconsolata, Icons 11
+  status_command i3status -c ~/.config/i3/i3status.conf
 	colors {
 		background $bg-color
 		separator #757575
 		#                  border             background         text
-		focused_workspace  $bg-color          $bg-color          $text-color
+		focused_workspace  $border-color      $bg-color          $text-color
 		inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
 		urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
 	}
@@ -199,11 +209,13 @@ bindsym XF86AudioLowerVolume exec pulsemixer --change-volume -5
 bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
 
 # Remove windows title
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 2
 
 # Colors
-set $border-color        #3f555f
-set $bg-color 	         #2f343f
+#set $border-color        #3f555f
+set $border-color        #ffffff
+#set $bg-color 	         #2f343f
+set $bg-color 	         #1f1f1f
 set $inactive-bg-color   #2f343f
 set $text-color          #f3f4f5
 set $inactive-text-color #676E7D
