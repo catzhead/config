@@ -4,6 +4,25 @@
 
 journalctl
 
+## Networking
+
+```
+nmcli device wifi list
+nmcli device wifi connect <SSID> password <password>
+```
+
+If problem during the connection (e.g. strange characters in the passwd):
+/etc/NetworkManager/system-connections
+
+## Samba
+
+Install cifs
+
+```
+sudo mount -t cifs //ds414/video1 /mnt/smb\
+  -ouid=catzhead,gid=catzhead,username=catzhead
+```
+
 # X11
 
 ## Installation
@@ -53,6 +72,24 @@ xset r rate 300 30
 To keep it set, add it to ~/.xinitrc
 
 ### Brightness control
+
+To check the brightness:
+```
+cat /sys/class/backlight/intel_backlight/brightness
+```
+
+To change the brightness manually:
+```
+echo 1000 > /sys/class/backlight/intel_backlight/brightness
+```
+
+If permission denied, create /etc/udev/rules.d/backlight.rules:
+```
+ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
+ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+```
+
+And add user to 'video' group
 
 ```
 pacman -S light

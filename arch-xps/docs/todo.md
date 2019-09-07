@@ -1,4 +1,8 @@
-* spotify
+todo
+====
+* local octave -> readline not working?
+* keys for play/pause
+* screenshot tool
 
 done
 ====
@@ -10,3 +14,4 @@ done
 cancelled
 =========
 * stop touch-selection-drag (trying opera vimium)
+* spotify
