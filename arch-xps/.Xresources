@@ -18,11 +18,11 @@ URxvt.keyboard-select.clipboard: true
 *.color9:       #a66e02
 
 ! green
-*.color2:       #a3d5bb
+*.color2:       #437568
 *.color10:      #00853e
 
 ! yellow
-*.color3:       #ffd204
+*.color3:       #99aa04
 *.color11:      #ffd204
 
 ! blue
