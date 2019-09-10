@@ -73,10 +73,11 @@ call plug#end()
   vnoremap <leader>d "+d
   nnoremap <leader>p "+p
 
-" Experimental stuff " Use <F11> to toggle between paste and nopaste set pastetoggle=<F11>
+" Experimental stuff
 
 " Nerd tree
-	map <leader>n :NERDTreeToggle<CR>
+	map <leader>N :NERDTreeToggle<CR>
+	map <leader>n :NERDTreeFocus<CR>
 	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") &&
     \ b:NERDTree.isTabTree()) | q | endif
 
