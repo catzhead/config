@@ -1,5 +1,33 @@
 # Arch
 
+## pacman
+
+update all
+
+```
+pacman -Syu
+```
+
+force reinstall all packages
+
+```
+for i in `pacman -Qq` ; do sudo pacman -S --noconfirm $1 ; done
+```
+
+## Filesystems
+
+list all available partitions for mounting:
+
+```
+fdisk -l
+```
+
+check type of fs:
+
+```
+sudo file -sL /dev/x
+```
+
 ## Utils
 
 journalctl
