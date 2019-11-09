@@ -1,8 +1,9 @@
-URxvt.font:	 xft:Inconsolata:size=12:antialias=true
+URxvt.font:	 xft:Inconsolata:size=11:antialias=true
 URxvt.scrollBar: false
 URxvt.perl-ext-common: keyboard-select
 URxvt.keysym.M-Escape: keyboard-select:activate
 URxvt.keyboard-select.clipboard: true
+URxvt.letterSpace: -1
 
 ! special
 *.foreground:   #000000
