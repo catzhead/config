@@ -3,12 +3,17 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'https://github.com/scrooloose/nerdtree.git'
-Plug 'git://github.com/altercation/vim-colors-solarized.git'
 Plug 'https://github.com/xolox/vim-misc.git'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'https://github.com/reedes/vim-colors-pencil.git'
 Plug 'https://github.com/mswift42/vim-themes.git'
 Plug 'https://github.com/xolox/vim-colorscheme-switcher.git'
+
+" Completion
+Plug 'nvie/vim-flake8'
+Plug 'davidhalter/jedi-vim'
+
+" Python
+Plug 'https://github.com/PieterjanMontens/vim-pipenv'
+Plug 'https://github.com/plytophogy/vim-virtualenv'
 
 call plug#end()
 
@@ -87,3 +92,6 @@ call plug#end()
 
 " Disable the autoindent
   filetype indent off
+
+" Python
+  let python_highlight_all=1
