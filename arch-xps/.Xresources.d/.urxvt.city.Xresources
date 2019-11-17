@@ -1,0 +1,37 @@
+! terminal.sexy - dkeg - City Streets (inverted)
+! special
+*.background:   #f0f0f0
+*.foreground:   #000000
+*.cursorColor:  #434343
+
+! black
+*.color8:       #201e24
+*.color0:       #837c78
+
+! red
+*.color9:       #2d2b30
+*.color1:       #89827d
+
+! green
+*.color10:       #3f3d40
+*.color2:      #a7a099
+
+! yellow
+*.color11:       #413c3e
+*.color3:      #c2bec1
+
+! blue
+*.color12:       #423e41
+*.color4:      #c3bcb2
+
+! magenta
+*.color13:       #4e4a4b
+*.color5:      #cbc5ba
+
+! cyan
+*.color14:       #6e6765
+*.color6:      #e3ddd2
+
+! white
+*.color15:       #837e81
+*.color7:      #efe8dc

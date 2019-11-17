@@ -2,12 +2,18 @@
 
 call plug#begin('~/.vim/plugged')
 
+" Navigation
 Plug 'https://github.com/scrooloose/nerdtree.git'
+Plug 'wincent/command-t'
+Plug 'https://github.com/sjbach/lusty'
+Plug 'mileszs/ack.vim'
+
+" Misc
 Plug 'https://github.com/xolox/vim-misc.git'
 Plug 'https://github.com/mswift42/vim-themes.git'
 Plug 'https://github.com/xolox/vim-colorscheme-switcher.git'
 
-" Completion
+" Completion/PEP-8
 Plug 'nvie/vim-flake8'
 Plug 'davidhalter/jedi-vim'
 
@@ -40,7 +46,8 @@ call plug#end()
   set background=light
   if has("gui_running")
     set t_Co=256
-    colorscheme soft-stone
+    "colorscheme soft-stone
+    colorscheme Thursday
     set termguicolors
     set guifont=Inconsolata\ 12
     set guioptions+=lrbmTLce
@@ -95,3 +102,9 @@ call plug#end()
 
 " Python
   let python_highlight_all=1
+  autocmd BufWritePost *.py call Flake8()
+  let g:flake8_show_in_gutter=1
+
+" Quickfix shortcuts
+  nnoremap <F11> :cprev <CR>
+  nnoremap <F12> :cnext <CR>

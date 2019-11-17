@@ -14,7 +14,7 @@ XDG_CONFIG_HOME=$HOME/.config
   #. /usr/share/powerline/bindings/bash/powerline.sh
 #fi
 
-export PATH=$PATH:~/scripts
+export PATH=$PATH:~/.scripts
 
 alias ls='ls --color=auto'
 alias vi='gvim'
