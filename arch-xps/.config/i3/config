@@ -10,6 +10,7 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
+set $alt Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -138,6 +139,10 @@ bindsym $mod+Shift+r restart
 #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 bindsym $mod+Shift+e exec i3-msg exit
 
+# reboot/stop the computer
+bindsym $mod+$alt+r exec shutdown -r now
+bindsym $mod+$alt+q exec shutdown -h now
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -178,6 +183,7 @@ mode "movefloat" {
 
 bindsym $mod+r mode "resize"
 bindsym $mod+m mode "movefloat"
+bindsym $mod+n exec gvim ~/docs/notes/quick_note
 
 # Set the color of the child_border and indicator
 # class        border  backgr. text    indicator child_border
@@ -221,3 +227,12 @@ set $text-color          #f3f4f5
 set $inactive-text-color #676E7D
 set $urgent-bg-color     #E53935
 set $indicator-color     #ac8df4
+
+# Applications
+bindsym $mod+b exec --no-startup-id chromium
+bindsym $mod+Shift+b exec --no-startup-id chromium --incognito
+
+# Execute stuff
+#exec_always --no-startup-id compton
+#exec_always --no-startup-id picom
+#exec_always --no-startup-id flashfocus
