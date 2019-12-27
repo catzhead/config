@@ -234,5 +234,5 @@ bindsym $mod+Shift+b exec --no-startup-id chromium --incognito
 
 # Execute stuff
 #exec_always --no-startup-id compton
-#exec_always --no-startup-id picom
+exec_always --no-startup-id picom
 #exec_always --no-startup-id flashfocus
