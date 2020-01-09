@@ -13,7 +13,7 @@
 *.color9:       #7c7c7c
 
 ! green
-*.color2:       #8e8e8e
+*.color2:       #cccccc
 *.color10:      #8e8e8e
 
 ! yellow
