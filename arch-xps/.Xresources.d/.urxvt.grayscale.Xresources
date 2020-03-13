@@ -6,14 +6,14 @@
 
 ! black
 *.color0:       #101010
-*.color8:       #525252
+*.color8:       #ffffff
 
 ! red
-*.color1:       #7c7c7c
+*.color1:       #300000
 *.color9:       #7c7c7c
 
 ! green
-*.color2:       #cccccc
+*.color2:       #003000
 *.color10:      #8e8e8e
 
 ! yellow
@@ -21,7 +21,7 @@
 *.color11:      #a0a0a0
 
 ! blue
-*.color4:       #686868
+*.color4:       #000030
 *.color12:      #686868
 
 ! magenta
