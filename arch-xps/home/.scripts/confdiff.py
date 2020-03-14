@@ -71,7 +71,20 @@ def diff_dir(left_dir, right_dir):
             right_file = clean_path(os.path.join(right_dir, root, file))
 
             if not os.path.isfile(right_file):
-                print(f'{right_file} does not exist')
+                finished = False
+                while not finished:
+                    print(f'{right_file} does not exist')
+                    print(f'> [c]reate it, [i]gnore, [q]uit')
+                    c = getkey()
+                    if c == b'i':
+                        print('ignoring')
+                        finished = True
+                    if c == b'q':
+                        print('exiting')
+                        sys.exit(0)
+                    elif c == b'c':
+                        shutil.copyfile(left_file, right_file)
+                        finished = True
             else:
                 diff_files(left_file, right_file)
     os.chdir(original_dir)
