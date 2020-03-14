@@ -15,19 +15,19 @@ color7  = #505050
 color15 = #000000
 
 # Red
-color1  = #302020
+color1  = #604040
 color9  = #705050
 
 # Green
-color2  = #203020
+color2  = #406040
 color10 = #507050
 
 # Yellow
-color3  = #303020
+color3  = #606040
 color11 = #707050
 
 # Blue
-color4  = #202030
+color4  = #404060
 color12 = #505070
 
 # Purple

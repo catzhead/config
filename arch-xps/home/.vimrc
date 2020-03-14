@@ -18,7 +18,6 @@ Plug 'nvie/vim-flake8'
 Plug 'davidhalter/jedi-vim'
 
 " Python
-Plug 'https://github.com/PieterjanMontens/vim-pipenv'
 Plug 'https://github.com/plytophogy/vim-virtualenv'
 
 call plug#end()
@@ -104,6 +103,10 @@ call plug#end()
   let python_highlight_all=1
   autocmd BufWritePost *.py call Flake8()
   let g:flake8_show_in_gutter=1
+
+" jedi
+  let g:jedi#popup_on_dot = 0
+  let g:jedi#show_call_signatures = 0
 
 " Quickfix shortcuts
   nnoremap <F11> :cprev <CR>

@@ -14,7 +14,13 @@ XDG_CONFIG_HOME=$HOME/.config
   #. /usr/share/powerline/bindings/bash/powerline.sh
 #fi
 
-export PATH=$PATH:~/.scripts
+export PATH=$PATH:~/.local/bin:~/.scripts
+
+export FLATPAK_SYSTEM_DIR=/infra/flatpak
+
+export LIBVA_DRIVER_NAME=iHD
+
+export HISTCONTROL=ignorespace
 
 alias ls='ls --color=auto'
 alias vi='gvim'
