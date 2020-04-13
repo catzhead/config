@@ -12,3 +12,5 @@ git clone git@github.com:catzhead/freqtrade.git
 cd freqtrade
 docker-compose pull
 docker-compose build
+
+echo "config.json has to be added manually"
