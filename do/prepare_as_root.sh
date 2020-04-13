@@ -4,18 +4,18 @@
 
 # access rights
 
-apt-get update
+apt-get -qq update
 apt-get -qq install sudo
 usermod -aG sudo catzhead
 
 # docker (from DigitalOcean blog)
 
-apt -qq install apt-transport-https ca-certificates curl gnupg2 software-properties-common
+apt-get -qq install apt-transport-https ca-certificates curl gnupg2 software-properties-common
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-apt -qq update
+apt-get -qq update
 apt-cache policy docker-ce
-apt -qq install docker-ce
+apt-get -qq install docker-ce
 usermod -aG docker catzhead
 systemctl status docker
 
