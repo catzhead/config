@@ -5,18 +5,23 @@
 # access rights
 
 apt-get update
-apt-get --assume-yes install sudo
+apt-get -qq install sudo
 usermod -a -G sudo catzhead
 
 # install utils
 
-apt-get --assume-yes install vim
+apt-get -qq install vim
 
 # configure ssh
 
-mkdir /home/catzhead/.ssh
-cp /root/.ssh/authorized_keys /home/catzhead/.ssh
-chown -R catzhead /home/catzhead/.ssh
+if [ -e ~/.ssh/authorized_keys ]
+then
+  mkdir /home/catzhead/.ssh
+  cp /root/.ssh/authorized_keys /home/catzhead/.ssh
+  chown -R catzhead /home/catzhead/.ssh
+else
+  echo "couldn't find authorized_keys, skipping"
+fi
 
 # small stuff
 
