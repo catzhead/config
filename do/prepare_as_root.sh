@@ -17,7 +17,6 @@ apt-get -qq update
 apt-cache policy docker-ce
 apt-get -qq install docker-ce
 usermod -aG docker catzhead
-systemctl status docker
 
 # docker-compose
 
