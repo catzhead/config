@@ -17,3 +17,10 @@ apt-get --assume-yes install vim
 mkdir /home/catzhead/.ssh
 cp /root/.ssh/authorized_keys /home/catzhead/.ssh
 chown -R catzhead /home/catzhead/.ssh
+
+# small stuff
+
+echo TERM=xterm >> ~/.bashrc
+echo alias vi=\'vim\' >> ~/.bashrc
+echo TERM=xterm >> /home/catzhead/.bashrc
+echo alias vi=\'vim\' >> ~/.bashrc
