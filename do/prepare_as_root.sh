@@ -10,7 +10,7 @@ usermod -a -G sudo catzhead
 
 # install utils
 
-apt-get -qq install vim curl
+apt-get -qq install vim curl git
 
 # configure ssh
 
