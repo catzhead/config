@@ -1,0 +1,25 @@
+[Finch]
+color-available = green; black
+color-away = blue; black
+color-idle = gray; black
+color-offline = red; black
+color-message-sent = cyan; default
+color-message-received = red; default
+color-message-highlight = white; green
+color-message-action = yellow; default
+color-timestamp = blue; default
+
+[colorpairs]
+normal = white; black
+highlight = black; blue
+# highlightd = black; darkgray
+# shadow = black; darkgray
+title = black; blue
+# titled = black; gray
+text = white; black
+# disabled = black; white
+# urgent = black; green
+
+[GntTree::binding]
+k = move-up
+j = move-down

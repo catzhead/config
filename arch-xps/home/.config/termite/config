@@ -9,13 +9,13 @@ background          = #e7e7e7
 # 16 color space
 
 # Black, Gray, Silver, White
-color0  = #d0d0d0
+color0  = #e7e7e7
 color8  = #ffffff
 color7  = #505050
 color15 = #000000
 
 # Red
-color1  = #604040
+color1  = #ee8080
 color9  = #705050
 
 # Green
@@ -27,7 +27,7 @@ color3  = #606040
 color11 = #707050
 
 # Blue
-color4  = #404060
+color4  = #1060cc
 color12 = #505070
 
 # Purple
