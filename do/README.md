@@ -16,7 +16,7 @@ Execute:
 
 Logout completely and log in as user
 
-Create ssh key for github:
+Create ssh key for github and upload the public key:
 
 `ssh-keygen -t rsa -b 4096`
 
@@ -25,3 +25,5 @@ Retrieve prepare_as_user script:
 `wget https://raw.githubusercontent.com/catzhead/config/master/do/prepare_as_user.sh`
 
 Remember to add the config.json file(s)
+
+Warning: the user script leaves the user in the virtualenv

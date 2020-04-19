@@ -25,7 +25,7 @@ chmod a+x /usr/local/bin/docker-compose
 
 # install utils
 
-apt-get -qq install vim curl git
+apt-get -qq install vim curl git python3-pip python3-venv
 
 # configure ssh
 
