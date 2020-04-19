@@ -16,7 +16,7 @@ docker-compose build
 # python
 
 pip3 install --user virtualenv
-python -m venv .env
+python3 -m venv .env
 source .env/bin/activate
 pip3 install -r scripts/telegram-send-req.txt
 
