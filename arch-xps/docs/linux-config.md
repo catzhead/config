@@ -213,6 +213,14 @@ connect xx:xx:xx..
 scan off
 ```
 
+## Reconnect keyboard
+
+'''
+systemctl start bluetooth
+bluetoothctl
+power on
+'''
+
 # Log files
 
 * systemctl --failed
