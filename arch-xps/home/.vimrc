@@ -46,7 +46,7 @@ call plug#end()
   if has("gui_running")
     set t_Co=256
     "colorscheme soft-stone
-    colorscheme Thursday
+    colorscheme catz2
     set termguicolors
     set guifont=Inconsolata\ 12
     set guioptions+=lrbmTLce
