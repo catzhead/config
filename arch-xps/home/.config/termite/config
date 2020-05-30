@@ -4,7 +4,7 @@ foreground          = #464646
 foreground_bold     = #565656
 cursor              = #464646
 cursor_foreground   = #ffffff
-background          = #e7e7e7
+background          = #e7f0f0
 
 # 16 color space
 
@@ -15,16 +15,16 @@ color7  = #505050
 color15 = #000000
 
 # Red
-color1  = #ee8080
-color9  = #705050
+color1  = #ee5050
+color9  = #ff6060
 
 # Green
 color2  = #406040
 color10 = #507050
 
 # Yellow
-color3  = #606040
-color11 = #707050
+color3  = #aaaa40
+color11 = #aaaa40
 
 # Blue
 color4  = #1060cc
@@ -32,7 +32,7 @@ color12 = #505070
 
 # Purple
 color5  = #302030
-color13 = #705070
+color13 = #806080
 
 # Teal
 color6  = #203030
@@ -47,5 +47,5 @@ color20 = #657b83
 color21 = #073642
 
 [options]
-font = Inconsolata 11
+font = Inconsolata 12
 cursor_blink = off

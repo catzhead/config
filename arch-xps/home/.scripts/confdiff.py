@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import difflib
 import filecmp
 import os

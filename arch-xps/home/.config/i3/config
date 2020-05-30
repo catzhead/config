@@ -78,6 +78,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
+workspace_layout stacking
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
@@ -186,8 +187,10 @@ bindsym $mod+m mode "movefloat"
 bindsym $mod+n exec gvim ~/docs/notes/quick_note
 
 # Set the color of the child_border and indicator
-# class        border  backgr. text    indicator child_border
-client.focused #ffffff #000000 #ffffff #666666   #cccccc
+# class                   border  backgr. text    indicator child_border
+client.focused            #ffffff #302030 #ffffff #666666   #cccccc
+client.focused_inactive   #ffffff #dddddd #000000 #666666   #cccccc
+client.unfocused          #ffffff #aaaaaa #000000 #666666   #cccccc
 
 # Hide borders when there is only one window in the workspace
 hide_edge_borders smart
@@ -221,7 +224,8 @@ for_window [class="^.*"] border pixel 2
 #set $border-color        #3f555f
 set $border-color        #ffffff
 #set $bg-color 	         #2f343f
-set $bg-color 	         #1f1f1f
+#set $bg-color 	         #1f1f1f
+set $bg-color 	         #302030
 set $inactive-bg-color   #2f343f
 set $text-color          #f3f4f5
 set $inactive-text-color #676E7D
@@ -229,8 +233,8 @@ set $urgent-bg-color     #E53935
 set $indicator-color     #ac8df4
 
 # Applications
-bindsym $mod+b exec --no-startup-id chromium
-bindsym $mod+Shift+b exec --no-startup-id chromium --incognito
+bindsym $mod+b exec --no-startup-id brave
+bindsym $mod+Shift+b exec --no-startup-id brave --incognito
 
 # Execute stuff
 #exec_always --no-startup-id compton

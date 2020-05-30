@@ -15,12 +15,12 @@ XDG_CONFIG_HOME=$HOME/.config
 #fi
 
 export PATH=$PATH:~/.local/bin:~/.scripts
-
 export FLATPAK_SYSTEM_DIR=/infra/flatpak
-
 export LIBVA_DRIVER_NAME=iHD
-
 export HISTCONTROL=ignorespace
+
+# recall history command without executing it
+shopt -s histverify
 
 alias ls='ls --color=auto'
 alias vi='gvim'
@@ -31,4 +31,5 @@ alias kbde='setxkbmap de'
 alias kbus='setxkbmap us'
 alias kbfr='setxkbmap fr'
 alias play='ffplay -loglevel quiet'
+
 PS1="\[$(tput bold)\]\\$\[$(tput sgr0)\] "
