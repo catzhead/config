@@ -4,12 +4,12 @@ foreground          = #464646
 foreground_bold     = #565656
 cursor              = #464646
 cursor_foreground   = #ffffff
-background          = #e7f0f0
+background          = #ffffff
 
 # 16 color space
 
 # Black, Gray, Silver, White
-color0  = #e7e7e7
+color0  = #ffffff
 color8  = #ffffff
 color7  = #505050
 color15 = #000000

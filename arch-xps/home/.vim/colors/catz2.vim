@@ -13,12 +13,12 @@ let g:colors_name = "catz2"
 
 
 " Define reusable colorvariables.
-let s:bg="#e7f0f0"
+let s:bg="#ffffff"
 let s:fg="#2f2f2f"
 let s:fg2="#404040"
 let s:fg3="#505050"
 let s:fg4="#616161"
-let s:bg2="#d7e0e0"
+let s:bg2="#f0f0f0"
 let s:bg3="#aaaaaa"
 let s:bg4="#bdbfc0"
 let s:keyword="#28728f"
