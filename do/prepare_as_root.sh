@@ -6,6 +6,7 @@
 
 apt-get -qq update
 apt-get -qq install sudo
+useradd catzhead
 usermod -aG sudo catzhead
 
 # docker (from DigitalOcean blog)
