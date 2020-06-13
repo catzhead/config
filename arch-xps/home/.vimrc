@@ -54,7 +54,7 @@ call plug#end()
     set guioptions+=c
   else
     set t_Co=256
-    colorscheme catz2
+    colorscheme catz2term
     set termguicolors
   endif
 
