@@ -52,6 +52,10 @@ call plug#end()
     set guioptions+=lrbmTLce
     set guioptions-=lrbmTLce
     set guioptions+=c
+  else
+    set t_Co=256
+    colorscheme catz2
+    set termguicolors
   endif
 
 " Highlight search and use C-l to disable highlighting until the next search

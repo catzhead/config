@@ -7,13 +7,6 @@
 
 XDG_CONFIG_HOME=$HOME/.config
 
-#if [ "$TERM" != "linux" ]; then
-  #powerline-daemon -q
-  #POWERLINE_BASH_CONTINUATION=1
-  #POWERLINE_BASH_SELECT=1
-  #. /usr/share/powerline/bindings/bash/powerline.sh
-#fi
-
 export PATH=$PATH:~/.local/bin:~/.scripts
 export FLATPAK_SYSTEM_DIR=/infra/flatpak
 export LIBVA_DRIVER_NAME=iHD
@@ -23,13 +16,10 @@ export HISTCONTROL=ignorespace
 shopt -s histverify
 
 alias ls='ls --color=auto'
-alias vi='gvim'
+alias vi='vim'
 alias clipboard='xclip -o | xclip -selection clipboard -i'
-alias mountdocode='sshfs digitalocean:/home/catzhead/code ~/do/code'
-alias unmountdocode='fusermount3 -u ~/do/code'
 alias kbde='setxkbmap de'
 alias kbus='setxkbmap us'
 alias kbfr='setxkbmap fr'
-alias play='ffplay -loglevel quiet'
 
 PS1="\[$(tput bold)\]\\$\[$(tput sgr0)\] "
