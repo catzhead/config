@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Original script from Luke Smith ddspawn script (github.com/LukeSmithxyz)
+
+# Toggle floating dropdown terminal in i3, or start if non-existing.
+# Terminal names are in dd* to allow easily setting i3 settings.
+
+[ -z "$1" ] && exit
+
+script=$1
+
+if ! xwininfo -name dd$script;
+then
+  if [[ $script = "termite" ]];
+  then
+    echo "Window not detected and trying to create a terminal... spawning."
+    i3 "exec --no-startup-id termite --name=dd$script"
+  else
+    echo "Window not detected... spawning."
+    i3 "exec --no-startup-id termite --name=dd$script -e $script"
+  fi
+
+  # TODO: find a way to properly wait for the creation of the window
+  sleep 0.5
+fi
+
+i3 "[instance=\"dd$script\"] scratchpad show; [instance=\"dd$script\"] move position center"
