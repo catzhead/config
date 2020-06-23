@@ -15,12 +15,8 @@ bindsym $mod+Return exec termite
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu (a program launcher)
+# dmenu
 bindsym $mod+space exec dmenu_run
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
 bindsym $mod+h focus left
@@ -28,7 +24,6 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
@@ -40,7 +35,6 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
@@ -162,7 +156,7 @@ bindsym $mod+r mode "resize"
 bindsym $mod+m mode "movefloat"
 bindsym $mod+n exec gvim ~/docs/notes/quick_note
 
-# Colors (bo for border)
+# colors (bo for border)
 set $bg 	        #65737e
 set $bo           #65737e
 set $text         #f3f4f5
@@ -175,43 +169,54 @@ set $inact-text   #65737e
 set $urgent-bg    #c03935
 set $indicator    #ac8df4
 
-# Set the color of the child_border and indicator
+# set the color of the child_border and indicator
 # class                   border        backgr.   text        indicator child_bo
 client.focused            $bg           $bg       #ffffff     #666666   #cccccc
 client.focused_inactive   $unfoc-bo     $unfoc-bg $unfoc-text #666666   #cccccc
 client.unfocused          $inact-bo     $inact-bg $inact-text #666666   #cccccc
 
-# Hide borders when there is only one window in the workspace
+# hide borders when there is only one window in the workspace
 hide_edge_borders smart
 
-# Remove windows title
+# remove windows title
 for_window [class="^.*"] border pixel 0
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# status bar
 bar {
-  font pango:Inconsolata, Icons 11
+  font pango:Inconsolata, Icons 10
   status_command i3status -c ~/.config/i3/i3status.conf
 	colors {
 		background $bg
-		separator #757575
+		separator $text
 		#                  border     bg         text
 		focused_workspace  $inact-bo  $inact-bg  $inact-text
 		inactive_workspace $bo        $bg        $text
 		urgent_workspace   $urgent-bg $urgent-bg $text
 	}
+  # mode hide
+  # hidden_state hide
+  # modifier Mod4+Shift
 }
 
-# Brightness
+# brightness
 bindsym XF86MonBrightnessUp exec light -A 1
 bindsym XF86MonBrightnessDown exec light -U 1
 bindsym XF86AudioMute exec pulsemixer --toggle-mute
 bindsym XF86AudioLowerVolume exec pulsemixer --change-volume -5
 bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
 
-# Applications
+# applications
 bindsym $mod+b exec --no-startup-id brave
 bindsym $mod+Shift+b exec --no-startup-id brave --incognito
 
-# Execute stuff
-exec_always --no-startup-id picom
+# execute stuff
+exec --no-startup-id picom
+
+# scratchpads
+for_window [instance="dd*"] floating enable
+for_window [instance="dd*"] move scratchpad
+for_window [instance="dd*"] resize set 1500 800
+for_window [instance="dd*"] move position center
+
+bindsym $mod+t exec --no-startup-id ddspawn termite
+bindsym $mod+o exec --no-startup-id ddspawn octave-quiet
