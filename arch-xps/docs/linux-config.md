@@ -28,6 +28,12 @@ check type of fs:
 sudo file -sL /dev/x
 ```
 
+curses-style fdisk:
+
+```
+cfdisk
+```
+
 ## Utils
 
 journalctl
@@ -57,7 +63,8 @@ sudo mount -t cifs //ds414/video1 /mnt/smb\
 
 ```
 pacman -S xorg-server xorg-xinit
-pacman -S pango ttf-dejavu
+pacman -S pango ttf-dejavu noto-fonts ttf-inconsolata
+pacman -S adobe-source-han-sans-jp-fonts
 pacman -S i3
 ```
 
