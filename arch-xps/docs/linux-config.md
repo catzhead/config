@@ -57,6 +57,17 @@ sudo mount -t cifs //ds414/video1 /mnt/smb\
   -ouid=catzhead,gid=catzhead,username=catzhead
 ```
 
+## GRUB
+
+When creating a new linux partition, the bootloader needs to be reinstalled.
+The arch guide is ok, os-prober doesn't work with arch so the simple solution
+is to manually add the old menuentry in the /etc/grub.d/40_custom file and
+regenerate the grub config:
+
+'''
+grub-mkconfig -o /boot/grub/grub.cfg
+'''
+
 # X11
 
 ## Installation
@@ -272,8 +283,8 @@ To take the changes into account:
 powerline-daemon --replace
 ```
 
-# ssh
+# Misc
 
-## Problems with characters
+## Problems with characters in ssh
 
 In the remote environment, set TERM to rxvt-256color
