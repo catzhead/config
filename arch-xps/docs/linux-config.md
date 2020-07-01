@@ -34,9 +34,15 @@ curses-style fdisk:
 cfdisk
 ```
 
-## Utils
+## systemd
 
-journalctl
+When a service is called x@.service in /etc/systemd/system, it works for any
+service x@y.service. To lock the session on systemctl suspend, the service
+has to be enabled:
+
+```
+sudo systemctl enable suspend@catzhead
+```
 
 ## Networking
 
@@ -154,6 +160,12 @@ In i3 config:
 bindsym XF86AudioMute exec pulsemixer --toggle-mute
 bindsym XF86AudioLowerVolume exec pulsemixer --change-volume -5
 bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
+```
+
+### Multiple monitors
+
+```
+xrandr --output DP2 --auto --above eDP1
 ```
 
 # i3
