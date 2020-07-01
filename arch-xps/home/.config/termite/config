@@ -47,5 +47,5 @@ color20 = #657b83
 color21 = #073642
 
 [options]
-font = Inconsolata 12
+font = Hack 9
 cursor_blink = off
