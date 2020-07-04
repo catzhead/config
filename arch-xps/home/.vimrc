@@ -104,6 +104,7 @@ call plug#end()
   let python_highlight_all=1
   autocmd BufWritePost *.py call Flake8()
   let g:flake8_show_in_gutter=1
+  autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4
 
 " jedi
   let g:jedi#popup_on_dot = 0
