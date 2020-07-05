@@ -208,7 +208,7 @@ bar {
   # modifier Mod4+Shift
 }
 
-# brightness
+# audio/video/keyboard
 bindsym XF86MonBrightnessUp exec light -A 1
 bindsym XF86MonBrightnessDown exec light -U 1
 bindsym XF86AudioMute exec pulsemixer --toggle-mute
@@ -218,6 +218,7 @@ bindsym $mod+equal exec pulsemixer --toggle-mute
 bindsym $mod+minus exec pulsemixer --change-volume -5
 bindsym $mod+Shift+plus exec pulsemixer --change-volume +5
 bindcode 73 exec switchmon
+bindsym $mod+$alt+k exec kbbt
 
 # applications
 bindsym $mod+b exec --no-startup-id brave
