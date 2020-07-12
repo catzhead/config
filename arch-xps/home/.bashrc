@@ -11,6 +11,7 @@ export PATH=$PATH:~/.local/bin:~/.scripts
 export FLATPAK_SYSTEM_DIR=/infra/flatpak
 export LIBVA_DRIVER_NAME=iHD
 export HISTCONTROL=ignorespace
+export DOCKER_CONFIG=$HOME/.config/docker
 
 # recall history command without executing it
 shopt -s histverify
