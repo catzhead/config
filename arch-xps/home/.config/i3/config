@@ -168,7 +168,7 @@ bindsym $mod+n exec gvim ~/docs/notes/quick_note
 
 # colors (bo for border)
 set $bg           #65737e
-set $bo           #000000
+set $bo           #65737e
 set $text         #f3f4f5
 set $unfoc-bg     #cccccc
 set $unfoc-bo     #cccccc
@@ -177,19 +177,18 @@ set $inact-bg     #eeeeee
 set $inact-bo     #eeeeee
 set $inact-text   #65737e
 set $urgent-bg    #c03935
-set $indicator    #ac8df4
+set $indic        #ac8df4
 
-# set the color of the child_border and indicator
-# class                   border        backgr.   text        indicator child_bo
-client.focused            $bo           $bg       #ffffff     #666666   #cccccc
-client.focused_inactive   $unfoc-bo     $unfoc-bg $unfoc-text #666666   #cccccc
-client.unfocused          $inact-bo     $inact-bg $inact-text #666666   #cccccc
+# class                   border      backgr.   text        indicator child_bo
+client.focused            $bo         $bg       #ffffff     $indic    $bo
+client.focused_inactive   $unfoc-bo   $unfoc-bg $unfoc-text $indic    $unfoc-bo
+client.unfocused          $inact-bo   $inact-bg $inact-text $indic    $inactbo
 
 # hide borders when there is only one window in the workspace
 hide_edge_borders smart
 
 # remove windows title
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 2
 
 # status bar
 bar {
@@ -218,7 +217,10 @@ bindsym $mod+equal exec pulsemixer --toggle-mute
 bindsym $mod+minus exec pulsemixer --change-volume -5
 bindsym $mod+Shift+plus exec pulsemixer --change-volume +5
 bindcode 73 exec switchmon
-bindsym $mod+$alt+k exec kbbt
+bindsym $mod+$alt+k exec kbbt us
+bindsym $mod+$alt+u exec kbbt us
+bindsym $mod+$alt+f exec kbbt fr
+bindsym $mod+$alt+d exec kbbt de
 
 # applications
 bindsym $mod+b exec --no-startup-id brave
