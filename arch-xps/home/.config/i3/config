@@ -225,6 +225,7 @@ bindsym $mod+$alt+d exec kbbt de
 # applications
 bindsym $mod+b exec --no-startup-id brave
 bindsym $mod+Shift+b exec --no-startup-id brave --incognito
+bindsym $mod+p exec mpvclipboard
 
 # execute stuff
 exec --no-startup-id picom
