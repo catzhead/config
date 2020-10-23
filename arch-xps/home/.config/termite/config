@@ -49,4 +49,4 @@ color21 = #073642
 [options]
 font = Hack 9
 cursor_blink = off
-scrollback_lines = 10000
+scrollback_lines = 50000
