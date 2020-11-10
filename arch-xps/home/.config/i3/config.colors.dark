@@ -1,0 +1,11 @@
+set $bg           #002b36
+set $bo           #657b83
+set $text         #eee8d5
+set $unfoc-bg     #eee8d5
+set $unfoc-bo     #93a1a1
+set $unfoc-text   #073642
+set $inact-bg     #eee8d5
+set $inact-bo     #073642
+set $inact-text   #073642
+set $urgent-bg    #cb4b16
+set $indic        #073642

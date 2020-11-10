@@ -1,5 +1,3 @@
-[colors]
-
 foreground          = #464646
 foreground_bold     = #565656
 cursor              = #464646
@@ -45,8 +43,3 @@ color18 = #eee8d5
 color19 = #93a1a1
 color20 = #657b83
 color21 = #073642
-
-[options]
-font = Hack 9
-cursor_blink = off
-scrollback_lines = 50000

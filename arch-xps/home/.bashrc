@@ -17,7 +17,7 @@ export DOCKER_CONFIG=$HOME/.config/docker
 shopt -s histverify
 
 alias ls='ls --color=auto'
-alias vi='vim'
+alias vi='nvim'
 alias clipboard='xclip -o | xclip -selection clipboard -i'
 alias kbde='setxkbmap de'
 alias kbus='setxkbmap us'
