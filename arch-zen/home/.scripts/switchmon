@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if xrandr --listmonitors | grep -q eDP1; then
+  # on eDP1, switch to external
+  xrandr --output eDP1 --off --output DP2 --auto
+  # change sound to external also, but keep internal mic
+  pactl set-card-profile 0 output:hdmi-stereo-extra1+input:analog-stereo
+else
+  # on external, switch to internal
+  xrandr --output DP2 --off --output eDP1 --auto
+  # return sound to internal speakers and internal mic
+  pactl set-card-profile 0 output:analog-stereo+input:analog-stereo
+fi

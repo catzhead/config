@@ -1,0 +1,31 @@
+#!/bin/bash
+
+colors_theme_filename=~/.config/colors_theme
+
+colors_theme=`cat $colors_theme_filename`
+
+if [ "$colors_theme" == "light" ]; then
+  colors_theme="dark"
+else
+  colors_theme="light"
+fi
+
+echo Switching to $colors_theme colors theme
+
+echo $colors_theme > $colors_theme_filename
+
+echo i3
+sed -e "/INSERT_COLORS/{r$HOME/.config/i3/config.colors.$colors_theme" -e "d}" ~/.config/i3/config.template > ~/.config/i3/config
+i3-msg reload
+
+echo
+
+echo termite
+sed -e "/INSERT_COLORS/{r$HOME/.config/termite/config.colors.$colors_theme" -e "d}" ~/.config/termite/config.template > ~/.config/termite/config
+killall -v -USR1 termite
+
+echo
+
+echo neovim
+sed -e "/INSERT_COLORS/{r$HOME/.config/nvim/init.vim.colors.$colors_theme" -e "d}" ~/.config/nvim/init.vim.template > ~/.config/nvim/init.vim
+reloadneovim

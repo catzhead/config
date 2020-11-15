@@ -1,0 +1,47 @@
+#!/usr/bin/python
+
+# Copy-paste (for the moment) on dwm-theme-switcher by Daniel Jankowski
+# https://github.com/dj95/dwm-theme-switcher/blob/master/neovim-reload.py
+
+import os
+
+# arch linux: python-pynvim AUR package required
+
+from neovim import attach
+
+def get_all_instances():
+    instances = []
+
+    # get the content of /tmp
+    directory_content = os.listdir('/tmp')
+    for directory in directory_content:
+        # check if it contains directories starting with nvim
+        if directory.startswith('nvim'):
+            # check if the nvim directories contains a socket
+            dc = os.listdir('/tmp/' + directory)
+            if '0' in dc:
+                instances.append('/tmp/' + directory + '/0')
+    return instances
+
+
+def reload(instance):
+    # connect over the socker
+    nvim = attach('socket', path=instance)
+
+    # execute the reload command
+    nvim.command('source ~/.config/nvim/init.vim')
+
+
+def main():
+    # search for neovim instances
+    instances = get_all_instances()
+
+    # connect to instances and reload them
+    for instance in instances:
+        print(f"reloading {instance}")
+        reload(instance)
+    pass
+
+
+if __name__ == '__main__':
+    main()

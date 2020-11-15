@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# set the layout if provided
+if [ "$1" ]; then
+  setxkbmap $1
+fi
+
+# set the keyboard config for the bluetooth keyboard
+xset r rate 400 30
+xmodmap ~/.config/X11/.remap.bt
