@@ -11,14 +11,14 @@ let g:colors_name = "catz2term-dark"
 
 
 " Define reusable colorvariables.
-let s:bg="#002b36"
+let s:bg="#202020"
 let s:fg="#eee8d5"
 let s:fg2="#fdf6e3"
 let s:fg3="#93a1a1"
 let s:fg4="#ffffff"
-let s:bg2="#274652"
-let s:bg3="#657b83"
-let s:bg4="#839496"
+let s:bg2="#282828"
+let s:bg3="#303030"
+let s:bg4="#383838"
 let s:keyword="#93a1a1"
 let s:builtin="#657b83"
 let s:const= "#28766e"

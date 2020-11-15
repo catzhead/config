@@ -2,11 +2,11 @@
 foreground      = #eee8d5
 foreground_bold = #eee8d5
 cursor          = #555555
-background      = #002b36
+background      = #202020
 
 # black
-color0  = #073642
-color8  = #002b36
+color0  = #404040
+color8  = #202020
 
 # red
 color1  = #dc322f

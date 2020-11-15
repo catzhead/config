@@ -1,4 +1,4 @@
-set $bg           #002b36
+set $bg           #202020
 set $bo           #657b83
 set $text         #eee8d5
 set $unfoc-bg     #eee8d5
