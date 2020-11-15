@@ -85,6 +85,7 @@ def diff_dir(left_dir, right_dir):
                         print('exiting')
                         sys.exit(0)
                     elif c == b'c':
+                        os.makedirs(os.path.dirname(right_file), exist_ok=True)
                         shutil.copyfile(left_file, right_file)
                         finished = True
             else:
