@@ -1,5 +1,15 @@
 # zen server configuration
 
+## Thermals
+
+Install lm_sensors and asus-wmi-sensors-dkms-git
+
+## Docker
+
+Copy etc/systemd/system/docker.service.d/docker.conf
+
+Warning: iptables needs to be true for the containers to access the network
+
 ## Networking
 
 Configure the resolv.conf file in /etc for the DNS to work.

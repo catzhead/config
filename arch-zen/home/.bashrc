@@ -7,6 +7,7 @@
 
 XDG_CONFIG_HOME=$HOME/.config
 
+export TERM=xterm
 export PATH=$PATH:~/.local/bin:~/.scripts
 export FLATPAK_SYSTEM_DIR=/infra/flatpak
 export LIBVA_DRIVER_NAME=iHD
@@ -23,4 +24,4 @@ alias kbde='setxkbmap de'
 alias kbus='setxkbmap us'
 alias kbfr='setxkbmap fr'
 
-PS1="\[$(tput bold)\]\\$\[$(tput sgr0)\] "
+PS1="\h \[$(tput bold)\]\\$\[$(tput sgr0)\] "
