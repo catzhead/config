@@ -19,16 +19,16 @@ let s:fg4="#ffffff"
 let s:bg2="#282828"
 let s:bg3="#303030"
 let s:bg4="#383838"
-let s:keyword="#93a1a1"
-let s:builtin="#657b83"
+let s:keyword="#d6cd65"
+let s:builtin="#658376"
 let s:const= "#28766e"
-let s:comment="#808080"
+let s:comment="#909090"
 let s:func="#cb4b16"
-let s:str="#839496"
-let s:type="#2a9198"
+let s:str="#abc2c4"
+let s:type="#b2c4ab"
 let s:var="#7d6740"
-let s:warning="#fa0c0c"
-let s:warning2="#fa7b0c"
+let s:warning="#c78d50"
+let s:warning2="#c75f50"
 
 exe 'hi Normal guifg='s:fg' guibg='s:bg
 exe 'hi Cursor guifg='s:fg' guibg='s:bg
@@ -42,9 +42,10 @@ exe 'hi StatusLine guifg='s:fg2' guibg='s:bg3' gui=bold'
 exe 'hi Pmenu guifg='s:fg' guibg='s:bg2
 exe 'hi PmenuSel  guibg='s:bg3
 exe 'hi IncSearch guifg='s:bg' guibg='s:keyword
-exe 'hi Search   gui=underline'
+exe 'hi Search guifg='s:fg' guibg='s:bg' gui=underline'
 exe 'hi Directory guifg='s:const
 exe 'hi Folded guifg='s:fg4' guibg='s:bg
+exe 'hi Visual guifg='s:bg' guibg='s:fg3
 
 exe 'hi Boolean guifg='s:const
 exe 'hi Character guifg='s:const
