@@ -36,6 +36,7 @@ call plug#end()
   set guicursor+=a:blinkon0
   set noswapfile
   set cc=80
+  set cursorline
 
 " Style
   if has("gui_running")
