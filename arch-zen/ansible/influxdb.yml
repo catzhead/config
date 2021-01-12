@@ -1,0 +1,38 @@
+---
+- hosts: all
+  # root privilege escalation
+  become: true
+  vars_files:
+    - vault_catzhead.yml
+    - vars.yml
+
+  tasks:
+    - name: Install influxdb python package
+      pip:
+        name: influxdb
+
+    - name: Create database zen_telegraf
+      influxdb_database:
+        login_username: "{{ influxdb_admin_user }}"
+        login_password: "{{ influxdb_admin_pass }}"
+        database_name: "{{ influxdb_zen_telegraf_db }}"
+
+    - name: Configure retention policy on zen_telegraf
+      influxdb_retention_policy:
+        login_username: "{{ influxdb_admin_user }}"
+        login_password: "{{ influxdb_admin_pass }}"
+        database_name: "{{ influxdb_zen_telegraf_db }}"
+        policy_name: "zen_retention_policy"
+        duration: "2w"
+        replication: "1"
+
+    - name: Create user zen_telegraf and grant access to zen_telegraf
+      influxdb_user:
+        login_username: "{{ influxdb_admin_user }}"
+        login_password: "{{ influxdb_admin_pass }}"
+        user_name: "{{ influxdb_zen_telegraf_username }}"
+        user_password: "{{ influxdb_zen_telegraf_password }}"
+        grants:
+          - database: "{{ influxdb_zen_telegraf_db }}"
+            privilege: "ALL"
+
