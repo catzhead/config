@@ -12,7 +12,6 @@ Plug 'https://github.com/xolox/vim-misc.git'
 
 " Completion/PEP-8
 Plug 'nvie/vim-flake8'
-Plug 'davidhalter/jedi-vim'
 
 " Python
 Plug 'https://github.com/plytophogy/vim-virtualenv'
@@ -37,6 +36,7 @@ call plug#end()
   set guicursor+=a:blinkon0
   set noswapfile
   set cc=80
+  set cursorline
 
 " Style
   if has("gui_running")
@@ -56,7 +56,8 @@ call plug#end()
   endif
 
 " Highlight search and use C-l to disable highlighting until the next search
-"  set hlsearch
+  set hlsearch
+  nnoremap <CR> :nohlsearch<CR>
 "  nnoremap <leader>l :noh<CR><C-l>
 
 " Open new split in the correct direction
@@ -101,14 +102,10 @@ call plug#end()
   filetype indent off
 
 " Python
-  let python_highlight_all=1
+  let g:python_highlight_space_errors = 0
   autocmd BufWritePost *.py call Flake8()
   let g:flake8_show_in_gutter=1
   autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4
-
-" jedi
-  let g:jedi#popup_on_dot = 0
-  let g:jedi#show_call_signatures = 0
 
 " Quickfix shortcuts
   nnoremap <F11> :cprev <CR>
