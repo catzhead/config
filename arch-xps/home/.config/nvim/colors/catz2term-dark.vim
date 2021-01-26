@@ -27,8 +27,9 @@ let s:func="#b25933"
 let s:str="#abc2c4"
 let s:type="#b2c4ab"
 let s:var="#7d6740"
-let s:warning="#c78d50"
-let s:warning2="#c75f50"
+let s:warning="#999900"
+let s:warning2="#999900"
+let s:error="#660000"
 
 exe 'hi Normal guifg='s:fg' guibg='s:bg
 exe 'hi Cursor guifg='s:fg' guibg='s:bg
@@ -47,6 +48,7 @@ exe 'hi Search guifg='s:fg' guibg='s:bg' gui=underline'
 exe 'hi Directory guifg='s:const
 exe 'hi Folded guifg='s:fg4' guibg='s:bg
 exe 'hi Visual guifg='s:bg' guibg='s:fg3
+exe 'hi Error guifg='s:fg' guibg='s:error
 
 exe 'hi Boolean guifg='s:const
 exe 'hi Character guifg='s:const

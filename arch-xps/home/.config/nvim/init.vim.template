@@ -16,6 +16,12 @@ Plug 'nvie/vim-flake8'
 " Python
 Plug 'https://github.com/plytophogy/vim-virtualenv'
 
+" LSP client
+Plug 'autozimu/LanguageClient-neovim', {
+  \ 'branch': 'next',
+  \ 'do': 'bash install.sh',
+  \ }
+
 call plug#end()
 
 " Basic stuff
@@ -110,3 +116,9 @@ call plug#end()
 " Quickfix shortcuts
   nnoremap <F11> :cprev <CR>
   nnoremap <F12> :cnext <CR>
+
+" LanguageClient config
+  let g:LanguageClient_serverCommands = {
+  \ 'cpp': ['clangd'],
+  \ 'go': ['gopls']
+  \ }

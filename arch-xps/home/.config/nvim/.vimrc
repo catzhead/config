@@ -12,7 +12,6 @@ Plug 'https://github.com/xolox/vim-misc.git'
 
 " Completion/PEP-8
 Plug 'nvie/vim-flake8'
-Plug 'davidhalter/jedi-vim'
 
 " Python
 Plug 'https://github.com/plytophogy/vim-virtualenv'
