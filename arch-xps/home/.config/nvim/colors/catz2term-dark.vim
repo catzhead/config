@@ -16,9 +16,9 @@ let s:fg="#eee8d5"
 let s:fg2="#fdf6e3"
 let s:fg3="#93a1a1"
 let s:fg4="#ffffff"
-let s:bg2="#282828"
-let s:bg3="#303030"
-let s:bg4="#383838"
+let s:bg2="#353535"
+let s:bg3="#404040"
+let s:bg4="#454545"
 let s:keyword="#bab260"
 let s:builtin="#658376"
 let s:const= "#28766e"
@@ -30,6 +30,7 @@ let s:var="#7d6740"
 let s:warning="#999900"
 let s:warning2="#999900"
 let s:error="#660000"
+let s:todo="#4d3300"
 
 exe 'hi Normal guifg='s:fg' guibg='s:bg
 exe 'hi Cursor guifg='s:fg' guibg='s:bg
@@ -49,6 +50,7 @@ exe 'hi Directory guifg='s:const
 exe 'hi Folded guifg='s:fg4' guibg='s:bg
 exe 'hi Visual guifg='s:bg' guibg='s:fg3
 exe 'hi Error guifg='s:fg' guibg='s:error
+exe 'hi Todo guifg='s:fg' guibg='s:todo
 
 exe 'hi Boolean guifg='s:const
 exe 'hi Character guifg='s:const
@@ -80,7 +82,9 @@ exe 'hi Tag guifg='s:keyword
 exe 'hi Title guifg='s:fg'  gui=bold'
 exe 'hi Todo guifg='s:fg2'  gui=inverse,bold'
 exe 'hi Type guifg='s:type
-exe 'hi Underlined   gui=underline'
+exe 'hi Underlined gui=underline'
+exe 'hi RedrawDebugClear guifg='s:bg
+exe 'hi NvimInternalError guibg='s:error
 
 " Python Highlighting
 exe 'hi pythonBuiltinFunc guifg='s:builtin
