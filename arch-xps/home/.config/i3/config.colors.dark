@@ -1,8 +1,8 @@
 set $bg           #202020
-set $bo           #657b83
+set $bo           #aaa8a5
 set $text         #eee8d5
 set $unfoc-bg     #eee8d5
-set $unfoc-bo     #93a1a1
+set $unfoc-bo     #303030
 set $unfoc-text   #073642
 set $inact-bg     #eee8d5
 set $inact-bo     #073642

@@ -31,6 +31,8 @@ let s:warning="#999900"
 let s:warning2="#999900"
 let s:error="#660000"
 let s:todo="#4d3300"
+let s:cocerrorfg="#cc2020"
+let s:floating="#354346"
 
 exe 'hi Normal guifg='s:fg' guibg='s:bg
 exe 'hi Cursor guifg='s:fg' guibg='s:bg
@@ -40,9 +42,9 @@ exe 'hi CursorColumn  guibg='s:bg2
 exe 'hi ColorColumn  guibg='s:bg2
 exe 'hi LineNr guifg='s:fg2' guibg='s:bg2
 exe 'hi VertSplit guifg='s:fg3' guibg='s:bg3
-exe 'hi MatchParen guibg='s:bg' cterm=underline gui=underline'
+exe 'hi MatchParen guibg=NONE cterm=underline gui=underline'
 exe 'hi StatusLine guifg='s:fg2' guibg='s:bg3' gui=bold'
-exe 'hi Pmenu guifg='s:fg' guibg='s:bg2
+exe 'hi Pmenu guifg='s:fg3' guibg='s:floating
 exe 'hi PmenuSel  guibg='s:bg3
 exe 'hi IncSearch guifg='s:bg' guibg='s:keyword
 exe 'hi Search guifg='s:fg' guibg='s:bg' gui=underline'
@@ -51,6 +53,7 @@ exe 'hi Folded guifg='s:fg4' guibg='s:bg
 exe 'hi Visual guifg='s:bg' guibg='s:fg3
 exe 'hi Error guifg='s:fg' guibg='s:error
 exe 'hi Todo guifg='s:fg' guibg='s:todo
+exe 'hi SignColumn guifg='s:fg' guibg='s:bg
 
 exe 'hi Boolean guifg='s:const
 exe 'hi Character guifg='s:const
@@ -91,6 +94,10 @@ exe 'hi pythonBuiltinFunc guifg='s:builtin
 
 " Go Highlighting
 exe 'hi goBuiltins guifg='s:builtin
+
+" CoC
+exe 'hi CocErrorSign guifg='s:cocerrorfg
+exe 'hi CocErrorFloat guifg='s:fg3
 
 " Javascript Highlighting
 exe 'hi jsBuiltins guifg='s:builtin

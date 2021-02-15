@@ -1,0 +1,2 @@
+#!/bin/bash
+wol 24:4b:fe:de:f9:a5

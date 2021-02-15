@@ -16,7 +16,7 @@ let s:fg="#2f2f2f"
 let s:fg2="#404040"
 let s:fg3="#505050"
 let s:fg4="#616161"
-let s:bg2="#f0f0f0"
+let s:bg2="#f8f8f8"
 let s:bg3="#aaaaaa"
 let s:bg4="#bdbfc0"
 let s:keyword="#28728f"
@@ -29,22 +29,34 @@ let s:type="#56724b"
 let s:var="#7d6740"
 let s:warning="#fa0c0c"
 let s:warning2="#fa7b0c"
+let s:error="#aa0000"
+let s:todo="#ffffff"
+let s:cocerrorfg="#cc2020"
+let s:floating="#d5e5d5"
+let s:cursorline="#e2f9e9"
+let s:pmenusel="#95a595"
 
 exe 'hi Normal guifg='s:fg' guibg='s:bg
 exe 'hi Cursor guifg='s:bg' guibg='s:fg
-exe 'hi CursorLine  guibg='s:bg2
+exe 'hi CursorLine  guibg='s:cursorline
 exe 'hi CursorColumn  guibg='s:bg2
+exe 'hi CursorLineNR  gui=bold guifg='s:fg
 exe 'hi ColorColumn  guibg='s:bg2
 exe 'hi LineNr guifg='s:fg2' guibg='s:bg2
-exe 'hi VertSplit guifg='s:fg3' guibg='s:bg3
-exe 'hi MatchParen guibg='s:bg' cterm=underline gui=underline'
-exe 'hi StatusLine guifg='s:fg2' guibg='s:bg3' gui=bold'
-exe 'hi Pmenu guifg='s:fg' guibg='s:bg2
-exe 'hi PmenuSel  guibg='s:bg3
+exe 'hi VertSplit guifg='s:bg2' guibg='s:fg3
+exe 'hi MatchParen guibg=NONE cterm=underline gui=underline'
+exe 'hi StatusLine guifg='s:bg' guibg='s:bg4' gui=bold'
+exe 'hi StatusLineNC guifg='s:bg2' guibg='s:bg3
+exe 'hi Pmenu guifg='s:fg4' guibg='s:floating
+exe 'hi PmenuSel  guibg='s:pmenusel' guifg='s:bg
 exe 'hi IncSearch guifg='s:bg' guibg='s:keyword
-exe 'hi Search   gui=underline'
+exe 'hi Search gui=underline guibg=NONE'
 exe 'hi Directory guifg='s:const
 exe 'hi Folded guifg='s:fg4' guibg='s:bg
+exe 'hi Visual guifg='s:bg' guibg='s:fg3
+exe 'hi Error guifg='s:fg' guibg='s:error
+exe 'hi Todo guifg='s:fg' guibg='s:todo
+exe 'hi SignColumn guifg='s:fg' guibg='s:bg
 
 exe 'hi Boolean guifg='s:const
 exe 'hi Character guifg='s:const
@@ -77,12 +89,18 @@ exe 'hi Title guifg='s:fg'  gui=bold'
 exe 'hi Todo guifg='s:fg2'  gui=inverse,bold'
 exe 'hi Type guifg='s:type
 exe 'hi Underlined   gui=underline'
+exe 'hi RedrawDebugClear guifg='s:bg
+exe 'hi NvimInternalError guibg='s:error
 
 " Python Highlighting
 exe 'hi pythonBuiltinFunc guifg='s:builtin
 
 " Go Highlighting
 exe 'hi goBuiltins guifg='s:builtin
+
+" CoC
+exe 'hi CocErrorSign guifg='s:cocerrorfg
+exe 'hi CocErrorFloat guifg='s:error' guibg='s:floating
 
 " Javascript Highlighting
 exe 'hi jsBuiltins guifg='s:builtin

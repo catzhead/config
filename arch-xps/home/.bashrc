@@ -29,5 +29,7 @@ alias clipboard='xclip -o | xclip -selection clipboard -i'
 alias kbde='setxkbmap de'
 alias kbus='setxkbmap us'
 alias kbfr='setxkbmap fr'
+alias grep='grep --color=always -n'
+alias grepnc='grep'
 
 PS1="\[$(tput bold)\]\\$\[$(tput sgr0)\] "

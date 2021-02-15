@@ -16,6 +16,9 @@ Plug 'nvie/vim-flake8'
 " Python
 Plug 'https://github.com/plytophogy/vim-virtualenv'
 
+" Go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
 " LSP client
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -132,6 +135,7 @@ call plug#end()
   set hidden
   set updatetime=300
   set shortmess+=c
+  set signcolumn=yes
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
         \ <SID>check_back_space() ? "\<TAB>" :
@@ -152,8 +156,8 @@ call plug#end()
 
   " Make <CR> auto-select the first completion item and notify coc.nvim to
   " format on enter, <cr> could be remapped by other vim plugin
-  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                             \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+  " inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+  "                           \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
   " Use `[g` and `]g` to navigate diagnostics
   " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -188,3 +192,10 @@ call plug#end()
     vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
     vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
   endif
+
+" vim-go
+  let g:go_code_completion_enabled=0
+  let g:go_def_mapping_enabled=0
+  let g:go_doc_keywordprg_enabled=0
+  let g:go_template_autocreate=0
+  " let g:go_doc_popup_window=1
