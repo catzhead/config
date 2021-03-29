@@ -14,6 +14,9 @@ export FLATPAK_SYSTEM_DIR=/infra/flatpak
 export LIBVA_DRIVER_NAME=iHD
 export HISTCONTROL=ignorespace
 export DOCKER_CONFIG=$HOME/.config/docker
+export EDITOR=nvim
+export VISUAL=$EDITOR
+export GPG_TTY=$(tty)
 
 # Go
 export GOPATH=$HOME/go
