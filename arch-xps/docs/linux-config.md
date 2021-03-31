@@ -63,6 +63,16 @@ sudo mount -t cifs //ds414/video1 /mnt/smb\
   -ouid=catzhead,gid=catzhead,username=catzhead
 ```
 
+## Sleep mode
+
+The default sleep mode consumes too much battery overnight (~10%), use S3
+instead (resume is for hibernation, maybe not necessary in this case) by
+adding the following line in /etc/default/grub and regenerating the grub
+config:
+
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet mem_sleep_default=deep resume=UUID=75ed788c-30fb-4674-baed-ce4b28bf51f8"
+
+
 ## GRUB
 
 When creating a new linux partition, the bootloader needs to be reinstalled.
