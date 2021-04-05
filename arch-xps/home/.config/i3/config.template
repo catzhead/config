@@ -126,7 +126,7 @@ bindsym $mod+Shift+e exec i3-msg exit
 # reboot/stop the computer
 bindsym $mod+$alt+r exec shutdown -r now
 bindsym $mod+$alt+q exec shutdown -h now
-bindsym $mod+$alt+s exec systemctl hibernate
+bindsym $mod+$alt+s exec systemctl suspend
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
