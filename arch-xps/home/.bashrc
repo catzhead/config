@@ -23,6 +23,9 @@ export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 
+# scaling issue with alacritty
+# export WINIT_X11_SCALE_FACTOR=1
+
 # recall history command without executing it
 shopt -s histverify
 
@@ -36,3 +39,4 @@ alias grep='grep --color=always'
 alias grepl='grep --color=always -n'
 
 PS1="\[$(tput bold)\]\\$\[$(tput sgr0)\] "
+PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'

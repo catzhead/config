@@ -5,8 +5,7 @@ Before=sleep.target
 [Service]
 User=%I
 Type=forking
-Environment=DISPLAY=:0
-ExecStart=/usr/bin/i3lock -i /home/catzhead/pictures/lock.png
+ExecStart=/usr/bin/swaylock -i /home/catzhead/pictures/lock.png
 
 [Install]
 WantedBy=sleep.target

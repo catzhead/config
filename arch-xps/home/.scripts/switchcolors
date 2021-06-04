@@ -29,3 +29,14 @@ echo
 echo neovim
 sed -e "/INSERT_COLORS/{r$HOME/.config/nvim/init.vim.colors.$colors_theme" -e "d}" ~/.config/nvim/init.vim.template > ~/.config/nvim/init.vim
 reloadneovim
+
+echo
+
+echo alacritty
+sed -e "/INSERT_COLORS/{r$HOME/.config/alacritty/config.colors.$colors_theme" -e "d}" ~/.config/alacritty/alacritty.yml.template > ~/.config/alacritty/alacritty.yml
+
+echo
+
+echo sway
+sed -e "/INSERT_COLORS/{r$HOME/.config/sway/config.colors.$colors_theme" -e "d}" ~/.config/sway/config.template > ~/.config/sway/config
+swaymsg reload
