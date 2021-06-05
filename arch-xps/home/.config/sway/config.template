@@ -29,6 +29,12 @@ set $menu dmenu_path | dmenu | xargs swaymsg exec --
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
+set $internalmon eDP-1
+set $externalmon DP-2
+
+output $externalmon pos 0 0
+output $internalmon pos 760 1440
+
 ### Idle configuration
 #
 # Example configuration:
@@ -297,11 +303,11 @@ bindsym $mod+plus exec pulsemixer --change-volume +5
 bindsym XF86AudioMute exec pulsemixer --toggle-mute
 bindsym XF86AudioLowerVolume exec pulsemixer --change-volume -5
 bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
-bindsym $mod+$alt+k exec kbbt us
-bindsym $mod+$alt+u exec kbbt us
-bindsym $mod+$alt+f exec kbbt fr
-bindsym $mod+$alt+d exec kbbt de
+bindsym $mod+$alt+u input "type:keyboard" xkb_layout us
+bindsym $mod+$alt+f input "type:keyboard" xkb_layout fr
+bindsym $mod+$alt+d input "type:keyboard" xkb_layout de
 bindsym $mod+$alt+c exec switchcolors
+bindsym $mod+$alt+m output $internalmon toggle
 
 # applications
 bindsym $mod+b exec --no-startup-id MOZ_ENABLE_WAYLAND=1 firefox
