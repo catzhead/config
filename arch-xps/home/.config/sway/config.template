@@ -270,10 +270,7 @@ client.focused_inactive   $unfoc-bo   $unfoc-bg $unfoc-text $indic    $unfoc-bo
 client.unfocused          $inact-bo   $inact-bg $inact-text $indic    $inact-bo
 
 # hide borders when there is only one window in the workspace
-hide_edge_borders smart
-
-# remove windows title
-# default_border pixel 2
+smart_borders on
 
 #
 # Status Bar:
