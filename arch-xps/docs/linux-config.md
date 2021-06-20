@@ -72,7 +72,6 @@ config:
 
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet mem_sleep_default=deep resume=UUID=75ed788c-30fb-4674-baed-ce4b28bf51f8"
 
-
 ## GRUB
 
 When creating a new linux partition, the bootloader needs to be reinstalled.
@@ -223,6 +222,14 @@ and regenerate the config:
 
 ```
 grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+## Fan control
+
+Install libsmbios and set the thermal mode:
+
+```
+smbios-thermal-ctl --set-thermal-mode=Quiet
 ```
 
 # Audio
