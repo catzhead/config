@@ -178,6 +178,21 @@ bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
 xrandr --output DP2 --auto --above eDP1
 ```
 
+# Wayland
+
+## Hardware acceleration
+
+Install intel-media-driver (NOT libva-intel-driver). To check that it's
+working, use vainfor from libva-utils and intel_gpu_top from intel_gpu_tools.
+
+Check [arch wiki](https://wiki.archlinux.org/title/Hardware_video_acceleration)
+
+## Firefox
+
+```
+MOZ_ENABLE_WAYLAND=1 firefox
+```
+
 # i3
 
 Use the Windows key: set $mod Mod4
