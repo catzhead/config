@@ -332,3 +332,9 @@ powerline-daemon --replace
 ## Problems with characters in ssh
 
 In the remote environment, set TERM to rxvt-256color
+
+## K8s
+
+scp sa@157.230.26.123:~/.kube/config kubeconfig
+export KUBECONFIG=${PWD}/kubeconfig
+
