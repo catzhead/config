@@ -37,6 +37,8 @@ alias kbus='setxkbmap us'
 alias kbfr='setxkbmap fr'
 alias grep='grep --color=always'
 alias grepl='grep --color=always -n'
+alias tmux='tmux -f ~/.config/tmux/tmux.conf'
+alias catn='bat'
 
 PS1="\[$(tput bold)\]\\$\[$(tput sgr0)\] "
 PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
