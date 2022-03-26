@@ -192,6 +192,20 @@ Check [arch wiki](https://wiki.archlinux.org/title/Hardware_video_acceleration)
 MOZ_ENABLE_WAYLAND=1 firefox
 ```
 
+## Chromium
+
+Screen sharing, install:
+```
+pipewire
+xdg-desktop-portal
+xdg-desktop-portal-wlr
+slurp
+wofi
+bemenu
+```
+
+Enable flag "WebRTC PipeWire support"
+
 # i3
 
 Use the Windows key: set $mod Mod4
