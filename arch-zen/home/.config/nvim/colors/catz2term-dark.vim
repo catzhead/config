@@ -16,19 +16,23 @@ let s:fg="#eee8d5"
 let s:fg2="#fdf6e3"
 let s:fg3="#93a1a1"
 let s:fg4="#ffffff"
-let s:bg2="#282828"
-let s:bg3="#303030"
-let s:bg4="#383838"
+let s:bg2="#353535"
+let s:bg3="#404040"
+let s:bg4="#454545"
 let s:keyword="#bab260"
 let s:builtin="#658376"
-let s:const= "#28766e"
+let s:const= "#88969e"
 let s:comment="#909090"
 let s:func="#b25933"
 let s:str="#abc2c4"
 let s:type="#b2c4ab"
 let s:var="#7d6740"
-let s:warning="#c78d50"
-let s:warning2="#c75f50"
+let s:warning="#999900"
+let s:warning2="#999900"
+let s:error="#660000"
+let s:todo="#4d3300"
+let s:cocerrorfg="#cc2020"
+let s:floating="#354346"
 
 exe 'hi Normal guifg='s:fg' guibg='s:bg
 exe 'hi Cursor guifg='s:fg' guibg='s:bg
@@ -38,15 +42,18 @@ exe 'hi CursorColumn  guibg='s:bg2
 exe 'hi ColorColumn  guibg='s:bg2
 exe 'hi LineNr guifg='s:fg2' guibg='s:bg2
 exe 'hi VertSplit guifg='s:fg3' guibg='s:bg3
-exe 'hi MatchParen guibg='s:bg' cterm=underline gui=underline'
+exe 'hi MatchParen guibg=NONE cterm=underline gui=underline'
 exe 'hi StatusLine guifg='s:fg2' guibg='s:bg3' gui=bold'
-exe 'hi Pmenu guifg='s:fg' guibg='s:bg2
+exe 'hi Pmenu guifg='s:fg3' guibg='s:floating
 exe 'hi PmenuSel  guibg='s:bg3
 exe 'hi IncSearch guifg='s:bg' guibg='s:keyword
 exe 'hi Search guifg='s:fg' guibg='s:bg' gui=underline'
 exe 'hi Directory guifg='s:const
 exe 'hi Folded guifg='s:fg4' guibg='s:bg
 exe 'hi Visual guifg='s:bg' guibg='s:fg3
+exe 'hi Error guifg='s:fg' guibg='s:error
+exe 'hi Todo guifg='s:fg' guibg='s:todo
+exe 'hi SignColumn guifg='s:fg' guibg='s:bg
 
 exe 'hi Boolean guifg='s:const
 exe 'hi Character guifg='s:const
@@ -78,13 +85,19 @@ exe 'hi Tag guifg='s:keyword
 exe 'hi Title guifg='s:fg'  gui=bold'
 exe 'hi Todo guifg='s:fg2'  gui=inverse,bold'
 exe 'hi Type guifg='s:type
-exe 'hi Underlined   gui=underline'
+exe 'hi Underlined gui=underline'
+exe 'hi RedrawDebugClear guifg='s:bg
+exe 'hi NvimInternalError guibg='s:error
 
 " Python Highlighting
 exe 'hi pythonBuiltinFunc guifg='s:builtin
 
 " Go Highlighting
 exe 'hi goBuiltins guifg='s:builtin
+
+" CoC
+exe 'hi CocErrorSign guifg='s:cocerrorfg
+exe 'hi CocErrorFloat guifg='s:fg3
 
 " Javascript Highlighting
 exe 'hi jsBuiltins guifg='s:builtin

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Toggle the flwin-$1 window, but create it first if it does not exist
+# This script works in sway only
+
+[ -z "$1" ] && exit
+
+script=$1
+windowname=flwin-$script
+
+# rebinding the shell variable to a jqvariable because of shell quotes issue
+id=`swaymsg -t get_tree | jq --arg jqwindowname "$windowname" '..|try select(.name==$jqwindowname)|.id'`
+
+if [ -z "$id" ];
+then
+  if [[ $script = "alacritty" ]];
+  then
+    echo "Window not detected and trying to create a terminal... spawning."
+    sway "exec alacritty -t $windowname"
+  else
+    echo "Window not detected... spawning."
+    sway "exec alacritty -t $windowname -e $script"
+  fi
+  sleep 0.5
+fi
+
+sway "[title=\"^$windowname$\"] scratchpad show; [title=\"^$windowname$\"] move position center"

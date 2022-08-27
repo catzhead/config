@@ -1,2 +1,2 @@
 #!/bin/bash
-vim ~/docs/notes/quick_note
+nvim ~/docs/notes/quick_note

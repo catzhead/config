@@ -1,9 +1,0 @@
----
-domain_name: "stats.catzhead.xyz"
-
-influxdb_admin_user: "admin"
-influxdb_admin_pass: "{{ VAULT_INFLUXDB_ADMIN_PASSWORD }}"
-
-influxdb_zen_telegraf_db: "zen_telegraf"
-influxdb_zen_telegraf_username: "zen_telegraf"
-influxdb_zen_telegraf_password: "{{ VAULT_INFLUXDB_ZEN_TELEGRAF_PASSWORD }}"
