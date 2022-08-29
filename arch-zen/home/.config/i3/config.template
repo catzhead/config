@@ -42,8 +42,8 @@ bindsym $mod+Shift+Right move right
 
 # resize focused window
 bindsym $mod+Ctrl+h resize shrink width 50 px
-bindsym $mod+Ctrl+j resize grow height 50 px
-bindsym $mod+Ctrl+k resize shrink height 50 px
+bindsym $mod+Ctrl+j resize shrink height 50 px
+bindsym $mod+Ctrl+k resize grow height 50 px
 bindsym $mod+Ctrl+l resize grow width 50 px
 
 # focus should not follow the mouse
@@ -56,7 +56,7 @@ bindsym $mod+v split toggle
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-workspace_layout stacking
+# workspace_layout stacking
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
@@ -128,17 +128,13 @@ bindsym $mod+$alt+q exec systemctl poweroff
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
         bindsym l resize grow width 10 px or 10 ppt
         bindsym Shift+h resize shrink width 50 px or 50 ppt
-        bindsym Shift+j resize grow height 50 px or 50 ppt
-        bindsym Shift+k resize shrink height 50 px or 50 ppt
+        bindsym Shift+j resize shrink height 50 px or 50 ppt
+        bindsym Shift+k resize grow height 50 px or 50 ppt
         bindsym Shift+l resize grow width 50 px or 50 ppt
 
         # back to normal: Enter or Escape or $mod+r
@@ -149,13 +145,13 @@ mode "resize" {
 }
 
 mode "movefloat" {
-  bindsym k move up 20px
-  bindsym j move down 20px
   bindsym h move left 20px
+  bindsym j move down 20px
+  bindsym k move up 20px
   bindsym l move right 20px
-  bindsym Shift+k move up 50px
-  bindsym Shift+j move down 50px
   bindsym Shift+h move left 50px
+  bindsym Shift+j move down 50px
+  bindsym Shift+k move up 50px
   bindsym Shift+l move right 50px
   bindsym Escape mode "default"
   bindsym $mod+m mode "default"
@@ -182,7 +178,7 @@ INSERT_COLORS
 # class                   border      backgr.   text        indicator child_bo
 client.focused            $bo         $bg       $text       $indic    $bo
 client.focused_inactive   $unfoc-bo   $unfoc-bg $unfoc-text $indic    $unfoc-bo
-client.unfocused          $inact-bo   $inact-bg $inact-text $indic    $inactbo
+client.unfocused          $inact-bo   $inact-bg $inact-text $indic    $inact-bo
 
 # hide borders when there is only one window in the workspace
 hide_edge_borders smart
@@ -193,7 +189,7 @@ smart_gaps inverse_outer
 gaps inner 10
 
 # remove windows title
-for_window [class="^.*"] border pixel 2
+for_window [class="^.*"] border pixel 1
 
 # status bar
 bar {
