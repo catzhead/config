@@ -1,28 +1,18 @@
-# zen server configuration
+# zen configuration
 
-## Thermals
+## networking
 
-Install lm_sensors and asus-wmi-sensors-dkms-git
+Enable the following services:
+* `systemd-networkd`
+* `systemd-resolved`
 
-## Docker
+By default, systemd-networkd-wait-online waits for all interfaces with a
+timeout of 2min, to wait for any interface:
 
-Copy etc/systemd/system/docker.service.d/docker.conf
+```
+systemctl edit --full systemd-networkd-wait-online.service
+```
 
-Warning: iptables needs to be true for the containers to access the network
+and add "--any" to the ExecStart line:
 
-## Networking
-
-Configure the resolv.conf file in /etc for the DNS to work.
-
-Arch linux uses systemd-networkd to manage the network connection by default,
-the configuration is in etc/systemd/network for wired systems. Then the
-service needs to be enabled/started by systemd.
-
-## Telegraf
-
-Install telegraf AUR package
-
-Fill in the user and password variables in telegraf.conf and copy it to
-/etc/telegraf/telegraf.conf
-
-Then enable and start telegraf service
+	ExecStart=/usr/lib/systemd/systemd-networkd-wait-online --any

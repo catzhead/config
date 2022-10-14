@@ -1,5 +1,5 @@
 #!/bin/bash
 
-link=`xclip -selection XA_CLIPBOARD -out`
+link=`wl-paste`
 
-mpv $link
+mpv --ytdl-format="bestvideo[vcodec!=vp9]+bestaudio/best" $link
