@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+import argparse
+
+parser = argparse.ArgumentParser(
+             prog="light",
+             description="change backlight brightness")
+
+parser.add_argument("-s", '--set', type=int,
+                   help="value in percentage")
+parser.add_argument("-i", "--increase", type=int,
+                    help="percentage increase")
+parser.add_argument("-d", "--decrease", type=int,
+                    help="percentage decrease")
+
+args = parser.parse_args()
+
+actual_brightness = 0
+max_brightness = 0
+
+prefix = "/sys/class/backlight/intel_backlight/"
+
+with open(prefix + "max_brightness", "r") as max:
+    max_brightness = int(max.read())
+
+with open(prefix + "actual_brightness", "r") as actual:
+    actual_brightness = int(actual.read())
+
+step = int(max_brightness / 100)
+
+value = 0
+
+if args.set is not None:
+    value = args.set * step
+    if value > max_brightness:
+        value = max_brightness
+    if value == 0:
+        value = 1
+elif args.increase is not None:
+    value = actual_brightness + args.increase * step
+    if value > max_brightness:
+        value = max_brightness
+elif args.decrease is not None:
+    value = actual_brightness - args.decrease * step
+    if value < 0:
+        value = 1
+else:
+    value = actual_brightness
+
+with open(prefix + "brightness", "w+") as brightness:
+    brightness.write(str(value))

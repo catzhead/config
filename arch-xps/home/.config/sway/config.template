@@ -310,12 +310,12 @@ bindsym $mod+plus exec pulsemixer --change-volume +5
 bindsym XF86AudioMute exec pulsemixer --toggle-mute
 bindsym XF86AudioLowerVolume exec pulsemixer --change-volume -5
 bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
-bindsym XF86MonBrightnessDown exec light -U 1
-bindsym XF86MonBrightnessUp exec light -A 1
-bindsym Shift+XF86MonBrightnessDown exec light -S 1
-bindsym $alt+XF86MonBrightnessDown exec light -S 25
-bindsym Shift+XF86MonBrightnessUp exec light -S 100
-bindsym $alt+XF86MonBrightnessUp exec light -S 50
+bindsym XF86MonBrightnessDown exec light -d 1
+bindsym XF86MonBrightnessUp exec light -i 1
+bindsym Shift+XF86MonBrightnessDown exec light -s 1
+bindsym $alt+XF86MonBrightnessDown exec light -s 25
+bindsym Shift+XF86MonBrightnessUp exec light -s 100
+bindsym $alt+XF86MonBrightnessUp exec light -s 50
 bindsym $mod+$alt+u input "type:keyboard" xkb_layout us
 bindsym $mod+$alt+f input "type:keyboard" xkb_layout fr
 bindsym $mod+$alt+d input "type:keyboard" xkb_layout de
@@ -325,7 +325,10 @@ bindsym $mod+$alt+m output $internalmon toggle
 # applications
 bindsym $mod+b exec --no-startup-id MOZ_ENABLE_WAYLAND=1 firefox
 bindsym $mod+Shift+b exec --no-startup-id MOZ_ENABLE_WAYLAND=1 firefox --private-window
+# bindsym $mod+b exec --no-startup-id google-chrome-wayland.sh
+# bindsym $mod+Shift+b exec --no-startup-id google-chrome-wayland.sh --incognito
 bindsym $mod+p exec mpvclipboard
+bindsym $mod+Shift+s exec --no-startup-id slack-wayland.sh
 
 # scratchpads
 #for_window [title="^flwin-"] floating enable
