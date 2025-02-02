@@ -15,6 +15,7 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.backup = false
 vim.opt.writebackup = false
+vim.opt.wildmode = 'longest,list'
 
 -- Python - 4 space indent, no tabs
 vim.api.nvim_create_autocmd("FileType", {
