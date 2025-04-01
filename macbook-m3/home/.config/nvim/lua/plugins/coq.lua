@@ -17,12 +17,19 @@ return {
     -- - comment banner
     -- - etc
   },
-  init = function()
-    vim.g.coq_settings = {
-        auto_start = true, -- if you want to start COQ at startup
-        -- Your COQ settings here
-    }
-  end,
+	init = function()
+		vim.g.coq_settings = {
+			auto_start = true, -- if you want to start COQ at startup
+			display = {
+				preview = {
+				  border = 'rounded',
+				},
+				statusline = {
+					helo = false
+				},
+			},
+		}
+	end,
   config = function()
     -- Your LSP settings here
   end,
