@@ -16,6 +16,8 @@ vim.opt.shiftwidth = 2
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.wildmode = 'longest,list'
+vim.opt.colorcolumn = "80"
+vim.cmd [[highlight ColorColumn ctermbg=lightgrey guibg=lightgrey]]
 
 -- Python - 4 space indent, no tabs
 vim.api.nvim_create_autocmd("FileType", {
@@ -78,3 +80,5 @@ require('lualine').setup {
   inactive_winbar = {},
   extensions = {}
 }
+
+require("copilot").setup({})
