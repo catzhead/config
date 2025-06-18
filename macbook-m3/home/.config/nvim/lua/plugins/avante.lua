@@ -5,7 +5,14 @@ return {
 	---@module 'avante'
 	---@type avante.Config
 	opts = {
-		provider = "claude",
+		provider = "lmstudio",
+		providers = {
+			lmstudio = {
+				__inherited_from = "openai",
+				endpoint = "http://localhost:1234/v1",
+				model = "mistralai/codestral-22b-v0.1",
+			},
+		}
 	},
 	-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
 	build = "make",
