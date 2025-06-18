@@ -1,8 +1,7 @@
 return {
   "frankroeder/parrot.nvim",
   dependencies = { "ibhagwan/fzf-lua", "nvim-lua/plenary.nvim" },
-	lazy = true,
-  opts = {},
+	lazy = false,
 	config = function()
 		require("parrot").setup {
 			providers = {
@@ -10,7 +9,7 @@ return {
 					name = "anthropic",
 					endpoint = "https://api.anthropic.com/v1/messages",
 					model_endpoint = "https://api.anthropic.com/v1/models",
-					api_key = utils.get_api_key("anthropic-api-key", "API_TOKEN"),
+					api_key = "API_KEY",
 					params = {
 						chat = { max_tokens = 4096 },
 						command = { max_tokens = 4096 },
