@@ -95,7 +95,14 @@ __powerline() {
 					local venv=" $SYMBOL_PYTHON$COLOR_VENV$VENV_CLEAN$COLOR_RESET"
 				fi
 
-        PS1="$cwd$venv$git$symbol"
+        if [[ -n "$CONDA_DEFAULT_ENV" && "$CONDA_DEFAULT_ENV" != "base" ]]; then
+					local conda=" $SYMBOL_PYTHON$COLOR_VENV$CONDA_DEFAULT_ENV$COLOR_RESET"
+				else
+					local conda=""
+        fi
+
+
+        PS1="$cwd$conda$venv$git$symbol"
     }
 
     PROMPT_COMMAND="ps1${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
