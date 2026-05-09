@@ -3,6 +3,13 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 [[ -r "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh" ]] && . "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh"
 
+{{ else if eq .chezmoi.os "linux" -}}
+# User-installed binaries (chezmoi, mise, claude, ...). Idempotent.
+case ":$PATH:" in
+  *":$HOME/.local/bin:"*) ;;
+  *) export PATH="$HOME/.local/bin:$PATH" ;;
+esac
+
 {{ end -}}
 export PROMPT_DIRTRIM=2
 
