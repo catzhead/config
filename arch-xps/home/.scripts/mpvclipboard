@@ -1,5 +1,0 @@
-#!/bin/bash
-
-link=`wl-paste`
-
-mpv --ytdl-format="bestvideo[vcodec!=vp9]+bestaudio/best" $link

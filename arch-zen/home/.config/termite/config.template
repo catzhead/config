@@ -1,8 +1,0 @@
-[colors]
-
-INSERT_COLORS
-
-[options]
-font = Hack 9
-cursor_blink = off
-scrollback_lines = 50000

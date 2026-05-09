@@ -1,7 +1,0 @@
-#!/bin/sh
-
-xrandr --output eDP-1 --auto
-xrandr --output DP-2 --above eDP1 --auto
-
-# sound from external monitor but internal mic
-pactl set-card-profile 0 output:hdmi-stereo-extra1+input:analog-stereo

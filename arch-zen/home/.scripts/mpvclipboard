@@ -1,5 +1,0 @@
-#!/bin/bash
-
-link=`xclip -selection XA_CLIPBOARD -out`
-
-mpv $link
