@@ -146,16 +146,32 @@ Final diff is exactly the two intentional `.bash_profile` fixes:
 
 No other diffs. Safe to apply.
 
-### 10. Apply on the Mac, commit
+### 10. Apply on the Mac, commit — DONE
 
-- `chezmoi apply --dry-run --verbose` first.
-- Then `chezmoi apply`.
-- Sanity-check: open a fresh shell, run tmux, open nvim, open kitty.
-- Commit the migrated source tree to this repo on `chezmoi-migration`.
+`chezmoi apply --dry-run --verbose` showed the two expected `.bash_profile`
+fixes, nothing else. Ran `chezmoi apply` for real.
 
-### 11. Open PR, merge to master
+Post-apply verification:
 
-Once verified working on the Mac.
+- `chezmoi diff` returns empty (source ↔ target byte-identical).
+- New login shell expands `MAMBA_ROOT_PREFIX` to the corrected
+  `/Users/adrienbarbot/.local/share/mamba`.
+- `micromamba env list` finds `artio`, `lidar`, `lidar1` at the renamed
+  path — envs survived the directory rename intact.
+- `HOMEBREW_PREFIX` populated correctly via brew shellenv.
+
+Committed on `chezmoi-migration` as `c25d5d2 migrate to chezmoi-managed
+cross-platform dotfiles` — 173 files changed, 245 insertions, 16791
+deletions. (This MIGRATION.md update lives outside that commit.)
+
+Interactive smoke tests still recommended before merging: open a new
+kitty window, start a tmux session, open nvim, confirm the colorscheme
+and prompt look right.
+
+### 11. Merge to master — DONE
+
+No PR — personal repo, fast-forward merge of `chezmoi-migration` →
+`master`, then `git push origin master`.
 
 ### 12. (Future) Bootstrap the Linux VPS
 
