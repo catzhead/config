@@ -1,0 +1,13 @@
+# Belt-and-braces guard against committing unencrypted secrets.
+# Only `*.enc.yaml` (sops output) is allowed under secrets/.
+secrets/*.yaml
+secrets/*.yml
+secrets/*.json
+!secrets/*.enc.yaml
+!secrets/*.enc.yml
+!secrets/*.enc.json
+
+# Common editor / OS noise
+.DS_Store
+*.swp
+*.swo

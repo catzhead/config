@@ -2,6 +2,9 @@
 MIGRATION.md
 INVENTORY.md
 
+# SOPS-encrypted secrets — consumed by bootstrap.sh, never deployed to ~/
+secrets
+
 # macOS-only paths
 {{ if ne .chezmoi.os "darwin" -}}
 .config/kitty
