@@ -1,0 +1,9 @@
+[user]
+	name = catzhead
+	email = catzhead@hotmail.com
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = false

@@ -10,6 +10,12 @@ case ":$PATH:" in
   *) export PATH="$HOME/.local/bin:$PATH" ;;
 esac
 
+# mise — runtime version manager. Activates shims and reads .mise.toml /
+# .tool-versions to pick per-project python / rust / node versions.
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate bash)"
+fi
+
 {{ end -}}
 export PROMPT_DIRTRIM=2
 
