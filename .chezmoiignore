@@ -1,4 +1,5 @@
 # Repo-level docs — not dotfiles, must not deploy to ~/
+README.md
 MIGRATION.md
 INVENTORY.md
 
