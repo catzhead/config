@@ -30,8 +30,12 @@ secrets/
 ## Apply on a new machine
 
 ```sh
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply catzhead
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --ssh --apply git@github.com:catzhead/config.git
 ```
+
+The full SSH URL is required: `chezmoi init catzhead` would default to
+`https://github.com/catzhead/dotfiles.git`, which is both the wrong protocol
+(prompts for a GitHub password) and the wrong repo name.
 
 On the dev VPS this is invoked by `bootstrap/bootstrap.sh` in the infra repo;
 no manual run needed there.
