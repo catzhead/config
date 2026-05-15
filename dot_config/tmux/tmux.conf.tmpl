@@ -11,6 +11,10 @@ bind r source-file ~/.config/tmux/tmux.conf
 set -g prefix C-s
 set -g mouse on
 set -g default-terminal "tmux-256color"
+# OSC52 passthrough: let apps (nvim, etc.) write to the outer
+# terminal's clipboard through this tmux layer.
+set -g set-clipboard on
+set -ga terminal-overrides ",*:Ms=\E]52;c;%p2%s\007"
 set-option -g status-position top
 
 # Start windows and panes at 1, not 0
