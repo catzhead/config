@@ -13,9 +13,10 @@ set -g prefix C-s
 {{ else -}}
 # Different prefix on the VPS so a nested setup (local tmux on the
 # laptop wrapping a remote tmux on the VPS) doesn't have collisions.
-set -g prefix C-a
-unbind C-b
-bind C-a send-prefix
+# C-b is the tmux default — keeping it on linux means no unbinding
+# needed and no clash with the local C-s prefix.
+set -g prefix C-b
+bind C-b send-prefix
 {{ end -}}
 set -g mouse on
 set -g default-terminal "tmux-256color"
