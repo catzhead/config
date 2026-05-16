@@ -40,6 +40,10 @@ set -g @catppuccin_date_time_text " %H:%M"
 set -g @catppuccin_window_default_text " #W"
 set -g @catppuccin_window_text " #W"
 set -g @catppuccin_window_current_text " #W"
+{{ if eq .chezmoi.os "darwin" -}}
+# Mac's #h resolves to the .local mDNS name; show "local" instead.
+set -g @catppuccin_host_text "local"
+{{ end -}}
 
 # Load catppuccin
 run ~/.config/tmux/plugins/tmux/catppuccin.tmux
