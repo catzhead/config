@@ -8,7 +8,15 @@ unbind r
 bind r source-file ~/.config/tmux/tmux.conf
 
 # general stuff
+{{ if eq .chezmoi.os "darwin" -}}
 set -g prefix C-s
+{{ else -}}
+# Different prefix on the VPS so a nested setup (local tmux on the
+# laptop wrapping a remote tmux on the VPS) doesn't have collisions.
+set -g prefix C-a
+unbind C-b
+bind C-a send-prefix
+{{ end -}}
 set -g mouse on
 set -g default-terminal "tmux-256color"
 # OSC52 passthrough: let apps (nvim, etc.) write to the outer
