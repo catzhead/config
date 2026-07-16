@@ -1,7 +1,8 @@
 -- dvi AI: a small, direct bridge to a local LM Studio server. No plugin, no
 -- JSON protocol between model and editor -- just raw text in and out, so it
--- works reliably with local models. Step 1: a multi-turn floating chat seeded
--- with the current selection and the full file as context.
+-- works reliably with local models.
+--   <leader>ac  multi-turn streaming chat about the selection (+ file context)
+--   <leader>ar  apply the model's revision to the selection as an inline diff
 local M = {}
 
 local SYSTEM = table.concat({
@@ -11,11 +12,21 @@ local SYSTEM = table.concat({
   "Be concise unless asked for more.",
 }, " ")
 
+-- When the user applies a revision, ask for ONLY the replacement text.
+local APPLY_INSTR = table.concat({
+  "Now output ONLY the final revised version of the focus passage, as plain prose.",
+  "No commentary, no preamble, no quotation marks, no markdown code fences -- just the text",
+  "that should replace the passage.",
+}, " ")
+
 -- If the file is bigger than this, send a window around the selection instead.
 local MAX_CONTEXT_CHARS = 24000
 
--- Session state: a single conversation at a time.
-local S = { win = nil, buf = nil, messages = nil, focus = nil, busy = false }
+-- Chat session state (one conversation at a time).
+local S = { win = nil, buf = nil, messages = nil, focus = nil, busy = false, stream_text = nil }
+-- Pending inline diff (one at a time).
+local D = nil
+local NS = vim.api.nvim_create_namespace("dvi_ai_diff")
 
 local function base_url()
   return os.getenv("LMSTUDIO_URL") or "http://localhost:1234"
@@ -44,28 +55,94 @@ local function with_model(cb)
   end)
 end
 
--- POST a chat completion (non-streaming). cb(content) or cb(nil, err).
-local function complete(cb)
+-- Parse one SSE line into a content delta (or nil). Pure -> testable.
+function M._parse_delta(line)
+  line = line:gsub("\r$", "")
+  if line:sub(1, 6) ~= "data: " then
+    return nil
+  end
+  local payload = line:sub(7)
+  if payload == "[DONE]" then
+    return nil
+  end
+  local ok, obj = pcall(vim.json.decode, payload)
+  if ok and obj.choices and obj.choices[1] and obj.choices[1].delta then
+    return obj.choices[1].delta.content
+  end
+  return nil
+end
+
+-- Streaming completion. on_delta(text) per chunk; on_done(ok, err) at the end.
+local function stream(messages, on_delta, on_done)
+  with_model(function(model)
+    if not model then
+      on_done(false, "no model loaded (is LM Studio running at " .. base_url() .. "?)")
+      return
+    end
+    local body = vim.json.encode({ model = model, messages = messages, stream = true, temperature = 0.7 })
+    local acc = ""
+    vim.system({
+      "curl", "-sS", "-N", "-X", "POST",
+      base_url() .. "/v1/chat/completions",
+      "-H", "Content-Type: application/json",
+      "--data-binary", "@-",
+    }, {
+      text = true,
+      stdin = body,
+      stdout = function(_, data)
+        if not data then
+          return
+        end
+        acc = acc .. data
+        while true do
+          local nl = acc:find("\n")
+          if not nl then
+            break
+          end
+          local line = acc:sub(1, nl - 1)
+          acc = acc:sub(nl + 1)
+          local c = M._parse_delta(line)
+          if c and c ~= "" then
+            vim.schedule(function()
+              on_delta(c)
+            end)
+          end
+        end
+      end,
+    }, function(res)
+      vim.schedule(function()
+        if res.code ~= 0 then
+          on_done(false, ((res.stderr or "request failed"):gsub("%s+$", "")))
+        else
+          on_done(true)
+        end
+      end)
+    end)
+  end)
+end
+
+-- Non-streaming completion (for the apply step). cb(text) or cb(nil, err).
+local function complete(messages, cb)
   with_model(function(model)
     if not model then
       cb(nil, "no model loaded (is LM Studio running at " .. base_url() .. "?)")
       return
     end
-    local body = vim.json.encode({ model = model, messages = S.messages, stream = false, temperature = 0.7 })
+    local body = vim.json.encode({ model = model, messages = messages, stream = false, temperature = 0.5 })
     vim.system({
       "curl", "-sS", "-X", "POST",
       base_url() .. "/v1/chat/completions",
       "-H", "Content-Type: application/json",
-      "--data-binary", "@-", -- read body from stdin (avoids arg length limits)
+      "--data-binary", "@-",
     }, { text = true, stdin = body }, function(res)
       vim.schedule(function()
         if res.code ~= 0 then
-          cb(nil, "request failed: " .. ((res.stderr or ""):gsub("%s+$", "")))
+          cb(nil, "request failed")
           return
         end
         local ok, data = pcall(vim.json.decode, res.stdout or "")
         if not ok or not (data and data.choices and data.choices[1]) then
-          cb(nil, "unexpected response: " .. (res.stdout or ""):sub(1, 200))
+          cb(nil, "unexpected response: " .. (res.stdout or ""):sub(1, 160))
           return
         end
         cb(data.choices[1].message.content)
@@ -74,22 +151,19 @@ local function complete(cb)
   end)
 end
 
--- Build the message list (system carries the document + focus) from a buffer and
--- an optional 1-based line range. Returns messages, focus. Pure -> testable.
+-- Build the message list (system carries document + focus). Pure -> testable.
 function M._build(file_lines, l1, l2)
   local file_text = table.concat(file_lines, "\n")
   local focus
   if l1 and l1 > 0 and l2 and l2 >= l1 then
     focus = table.concat(vim.list_slice(file_lines, l1, l2), "\n")
   end
-
   local ctx = file_text
   if #ctx > MAX_CONTEXT_CHARS and focus then
     local a = math.max(1, l1 - 100)
     local b = math.min(#file_lines, l2 + 100)
     ctx = table.concat(vim.list_slice(file_lines, a, b), "\n")
   end
-
   local content = SYSTEM .. "\n\nFULL DOCUMENT (context):\n" .. ctx
   if focus then
     content = content .. "\n\nFOCUS PASSAGE (what the user is asking about):\n" .. focus
@@ -103,8 +177,8 @@ local function render()
   end
   local lines = {}
   if S.focus then
-    local snip = S.focus:gsub("%s+", " "):sub(1, 64)
-    table.insert(lines, "▎ focus: " .. snip .. (#S.focus > 64 and "…" or ""))
+    local snip = S.focus.text:gsub("%s+", " "):sub(1, 64)
+    table.insert(lines, "▎ focus: " .. snip .. (#S.focus.text > 64 and "…" or ""))
     table.insert(lines, "")
   end
   for i = 2, #S.messages do -- skip the system/context message
@@ -116,10 +190,18 @@ local function render()
     table.insert(lines, "")
   end
   if S.busy then
-    table.insert(lines, "AI: …")
+    table.insert(lines, "AI:")
+    local t = S.stream_text
+    if t and t ~= "" then
+      for _, l in ipairs(vim.split(t, "\n", { plain = true })) do
+        table.insert(lines, "  " .. l)
+      end
+    else
+      table.insert(lines, "  …")
+    end
   end
   if #lines == 0 then
-    lines = { "(press i to ask about the passage, q to close)" }
+    lines = { "(press i to ask, q to close)" }
   end
   vim.bo[S.buf].modifiable = true
   vim.api.nvim_buf_set_lines(S.buf, 0, -1, false, lines)
@@ -160,7 +242,7 @@ local function open_window()
   render()
 end
 
--- Ask for a message and send it.
+-- Ask for a message and stream the reply.
 function M.prompt()
   if S.busy then
     notify("still thinking…")
@@ -172,10 +254,18 @@ function M.prompt()
     end
     table.insert(S.messages, { role = "user", content = text })
     S.busy = true
+    S.stream_text = ""
     render()
-    complete(function(reply, err)
+    stream(S.messages, function(delta)
+      S.stream_text = S.stream_text .. delta
+      render()
+    end, function(ok, err)
+      table.insert(S.messages, {
+        role = "assistant",
+        content = ok and S.stream_text or ("[error] " .. (err or "unknown")),
+      })
+      S.stream_text = nil
       S.busy = false
-      table.insert(S.messages, { role = "assistant", content = reply or ("[error] " .. (err or "unknown")) })
       render()
     end)
   end)
@@ -195,8 +285,7 @@ function M.reset()
   render()
 end
 
--- Entry point, mode-aware: from visual mode the selection becomes the focus
--- passage; from normal mode the whole file is the context (no specific focus).
+-- Entry point, mode-aware. Visual selection -> focus passage; normal -> whole file.
 function M.open_chat()
   local m = vim.fn.mode()
   local l1, l2 = 0, 0
@@ -206,16 +295,106 @@ function M.open_chat()
     if l1 > l2 then
       l1, l2 = l2, l1
     end
-    -- leave visual mode so the float takes focus cleanly
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
   end
   local buf = vim.api.nvim_get_current_buf()
   local file_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-  S.messages, S.focus = M._build(file_lines, l1, l2)
+  local msgs, focus_text = M._build(file_lines, l1, l2)
+  S.messages = msgs
+  S.focus = focus_text and { text = focus_text, bufnr = buf, l1 = l1, l2 = l2 } or nil
   open_window()
-  vim.schedule(function()
-    M.prompt()
+  vim.schedule(M.prompt)
+end
+
+-- ------- apply the conversation's outcome to the selection, as an inline diff
+
+local function clear_diff()
+  if not D then
+    return
+  end
+  if vim.api.nvim_buf_is_valid(D.bufnr) then
+    vim.api.nvim_buf_clear_namespace(D.bufnr, NS, 0, -1)
+    pcall(vim.keymap.del, "n", "<leader>ay", { buffer = D.bufnr })
+    pcall(vim.keymap.del, "n", "<leader>ad", { buffer = D.bufnr })
+  end
+end
+
+-- Replace [l1,l2] with new_text; show old as dimmed virtual lines above, new
+-- highlighted; bind accept/reject. Pure-ish (no network) -> testable.
+function M._show_diff(bufnr, l1, l2, new_text)
+  if not vim.api.nvim_buf_is_valid(bufnr) then
+    return
+  end
+  clear_diff()
+  local old_lines = vim.api.nvim_buf_get_lines(bufnr, l1 - 1, l2, false)
+  local new_lines = vim.split(new_text, "\n", { plain = true })
+  while #new_lines > 1 and new_lines[#new_lines] == "" do
+    table.remove(new_lines)
+  end
+  vim.api.nvim_buf_set_lines(bufnr, l1 - 1, l2, false, new_lines)
+  for i = 0, #new_lines - 1 do
+    vim.api.nvim_buf_set_extmark(bufnr, NS, l1 - 1 + i, 0, { line_hl_group = "DiffAdd" })
+  end
+  local virt = {}
+  for _, l in ipairs(old_lines) do
+    virt[#virt + 1] = { { l == "" and " " or l, "DiffDelete" } }
+  end
+  vim.api.nvim_buf_set_extmark(bufnr, NS, l1 - 1, 0, { virt_lines = virt, virt_lines_above = true })
+  D = { bufnr = bufnr, l1 = l1, new_count = #new_lines, old_lines = old_lines }
+  local o = { buffer = bufnr, silent = true, nowait = true }
+  vim.keymap.set("n", "<leader>ay", M.accept, o)
+  vim.keymap.set("n", "<leader>ad", M.reject, o)
+  pcall(vim.api.nvim_set_current_buf, bufnr)
+  pcall(vim.api.nvim_win_set_cursor, 0, { l1, 0 })
+  notify("revision ready — <leader>ay accept · <leader>ad discard")
+end
+
+function M.apply()
+  if not (S.messages and #S.messages > 1) then
+    notify("no conversation yet — chat first (<leader>ac)", vim.log.levels.WARN)
+    return
+  end
+  if not S.focus then
+    notify("no focus passage — start the chat from a visual selection", vim.log.levels.WARN)
+    return
+  end
+  if S.busy then
+    notify("still thinking…")
+    return
+  end
+  local msgs = vim.deepcopy(S.messages)
+  table.insert(msgs, { role = "user", content = APPLY_INSTR })
+  M.close()
+  notify("revising…")
+  complete(msgs, function(text, err)
+    if not text then
+      notify(err or "failed", vim.log.levels.ERROR)
+      return
+    end
+    text = text:gsub("^```%w*\n?", ""):gsub("\n?```%s*$", "")
+    M._show_diff(S.focus.bufnr, S.focus.l1, S.focus.l2, text)
   end)
+end
+
+function M.accept()
+  if not D then
+    return
+  end
+  clear_diff()
+  D = nil
+  notify("applied")
+end
+
+function M.reject()
+  if not D then
+    return
+  end
+  if vim.api.nvim_buf_is_valid(D.bufnr) then
+    vim.api.nvim_buf_set_lines(D.bufnr, D.l1 - 1, D.l1 - 1 + D.new_count, false, D.old_lines)
+  end
+  clear_diff()
+  D = nil
+  notify("discarded")
 end
 
 return M
