@@ -54,11 +54,7 @@ M.specs = {
   { group = "Git", lhs = "gg", desc = "In the library: commit AND push", display = true },
 
   -- AI (local LLM via LM Studio; custom lua/config/ai.lua)
-  { group = "AI", lhs = "<leader>ac", rhs = "<cmd>lua require('config.ai').open_chat()<CR>", desc = "Chat about the selection / file (i=ask, q=close, gx=clear)", mode = { "n", "v" } },
-  { group = "AI", lhs = "<CR>", desc = "In chat (visual): apply the selected text to your passage", display = true },
-  { group = "AI", lhs = "<leader>ar", rhs = "<cmd>lua require('config.ai').apply()<CR>", desc = "Auto-apply: ask model for only the revision (less reliable locally)" },
-  { group = "AI", lhs = "<leader>ay", desc = "Accept the pending revision (inline diff)", display = true },
-  { group = "AI", lhs = "<leader>ad", desc = "Discard the pending revision", display = true },
+  { group = "AI", lhs = "<leader>ac", rhs = "<cmd>lua require('config.ai').open_chat()<CR>", desc = "Chat about the selection / file (i=ask, select+y=copy, gx=clear, q=close)", mode = { "n", "v" } },
 
   -- Help
   { group = "Help", lhs = "<leader>?", rhs = function() require("config.help").open() end, desc = "Show this cheat sheet" },

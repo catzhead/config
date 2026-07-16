@@ -1,25 +1,14 @@
 -- dvi AI: a small, direct bridge to a local LM Studio server. No plugin, no
--- JSON protocol between model and editor -- just raw text in and out, so it
--- works reliably with local models.
---   <leader>ac  multi-turn streaming chat about the selection (+ file context)
---   <leader>ar  apply the model's revision to the selection as an inline diff
+-- JSON protocol -- just raw text. A multi-turn streaming chat about the current
+-- selection (with the whole file as context). It does not edit your document;
+-- select text in the window and yank (y) to copy anything you want to keep.
 local M = {}
 
 local SYSTEM = table.concat({
   "You are a thoughtful writing companion for long-form prose (blog posts, articles, books).",
   "You are given the full document for context and usually a focus passage the user is asking about.",
   "Answer conversationally and specifically, considering how the passage fits the whole document.",
-  "Be concise unless asked for more.",
-  "When you propose revised prose, write it plain: do NOT add Markdown formatting",
-  "(no **bold**, _italics_, headings, bullet lists, checkboxes, or blockquotes)",
-  "unless the original passage already used it.",
-}, " ")
-
--- When the user applies a revision, ask for ONLY the replacement text.
-local APPLY_INSTR = table.concat({
-  "Now output ONLY the final revised version of the focus passage, as plain prose.",
-  "No commentary, no preamble, no quotation marks, no markdown code fences -- just the text",
-  "that should replace the passage.",
+  "Be concise unless asked for more. Write plain prose; avoid Markdown formatting unless asked.",
 }, " ")
 
 -- If the file is bigger than this, send a window around the selection instead.
@@ -27,9 +16,6 @@ local MAX_CONTEXT_CHARS = 24000
 
 -- Chat session state (one conversation at a time).
 local S = { win = nil, buf = nil, messages = nil, focus = nil, busy = false, stream_text = nil }
--- Pending inline diff (one at a time).
-local D = nil
-local NS = vim.api.nvim_create_namespace("dvi_ai_diff")
 
 local function base_url()
   return os.getenv("LMSTUDIO_URL") or "http://localhost:1234"
@@ -56,17 +42,6 @@ local function with_model(cb)
       cb(id)
     end)
   end)
-end
-
--- Strip Markdown formatting the model tends to sprinkle into a rewrite, so an
--- applied revision lands as plain prose. Pure -> testable.
-function M._plainify(l)
-  l = l:gsub("^(%s*)>%s+", "%1") -- blockquote
-  l = l:gsub("^(%s*)[-*+]%s+%[[ xX]%]%s+", "%1") -- task checkbox (before bullet)
-  l = l:gsub("^(%s*)[-*+]%s+", "%1") -- bullet
-  l = l:gsub("^(%s*)%d+%.%s+", "%1") -- ordered list
-  l = l:gsub("%*%*(.-)%*%*", "%1"):gsub("__(.-)__", "%1") -- bold
-  return l
 end
 
 -- Parse one SSE line into a content delta (or nil). Pure -> testable.
@@ -135,36 +110,6 @@ local function stream(messages, on_delta, on_done)
   end)
 end
 
--- Non-streaming completion (for the apply step). cb(text) or cb(nil, err).
-local function complete(messages, cb)
-  with_model(function(model)
-    if not model then
-      cb(nil, "no model loaded (is LM Studio running at " .. base_url() .. "?)")
-      return
-    end
-    local body = vim.json.encode({ model = model, messages = messages, stream = false, temperature = 0.5 })
-    vim.system({
-      "curl", "-sS", "-X", "POST",
-      base_url() .. "/v1/chat/completions",
-      "-H", "Content-Type: application/json",
-      "--data-binary", "@-",
-    }, { text = true, stdin = body }, function(res)
-      vim.schedule(function()
-        if res.code ~= 0 then
-          cb(nil, "request failed")
-          return
-        end
-        local ok, data = pcall(vim.json.decode, res.stdout or "")
-        if not ok or not (data and data.choices and data.choices[1]) then
-          cb(nil, "unexpected response: " .. (res.stdout or ""):sub(1, 160))
-          return
-        end
-        cb(data.choices[1].message.content)
-      end)
-    end)
-  end)
-end
-
 -- Build the message list (system carries document + focus). Pure -> testable.
 function M._build(file_lines, l1, l2)
   local file_text = table.concat(file_lines, "\n")
@@ -216,7 +161,7 @@ local function render()
   end
   if not S.busy then
     table.insert(lines, "")
-    table.insert(lines, "· i ask · select text + <CR> applies it · gx clear · q close")
+    table.insert(lines, "· i ask · select + y to copy · gx clear · q close")
   end
   if #lines == 0 then
     lines = { "(press i to ask, q to close)" }
@@ -235,8 +180,7 @@ local function open_window()
     return
   end
   S.buf = vim.api.nvim_create_buf(false, true)
-  -- a neutral filetype: keep render-markdown, the paragraph gradient, spell and
-  -- the markdown autocmds out of the chat window (it's a UI, not a document)
+  -- neutral filetype keeps render-markdown, the gradient and spell out of the chat
   vim.bo[S.buf].filetype = "dvichat"
   vim.bo[S.buf].bufhidden = "hide"
   local w = math.min(80, vim.o.columns - 8)
@@ -259,9 +203,6 @@ local function open_window()
   vim.keymap.set("n", "q", M.close, o)
   vim.keymap.set("n", "<Esc>", M.close, o)
   vim.keymap.set("n", "gx", M.reset, o)
-  -- select a revision in the chat, then <leader>ar (or <CR>) applies exactly it
-  vim.keymap.set("x", "<leader>ar", M.apply_selection, o)
-  vim.keymap.set("x", "<CR>", M.apply_selection, o)
   render()
 end
 
@@ -324,141 +265,9 @@ function M.open_chat()
   local file_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
   local msgs, focus_text = M._build(file_lines, l1, l2)
   S.messages = msgs
-  S.focus = focus_text and { text = focus_text, bufnr = buf, l1 = l1, l2 = l2 } or nil
+  S.focus = focus_text and { text = focus_text } or nil
   open_window()
   vim.schedule(M.prompt)
-end
-
--- ------- apply the conversation's outcome to the selection, as an inline diff
-
-local function clear_diff()
-  if not D then
-    return
-  end
-  if vim.api.nvim_buf_is_valid(D.bufnr) then
-    vim.api.nvim_buf_clear_namespace(D.bufnr, NS, 0, -1)
-    pcall(vim.keymap.del, "n", "<leader>ay", { buffer = D.bufnr })
-    pcall(vim.keymap.del, "n", "<leader>ad", { buffer = D.bufnr })
-  end
-end
-
--- Replace [l1,l2] with new_text; show old as dimmed virtual lines above, new
--- highlighted; bind accept/reject. Pure-ish (no network) -> testable.
-function M._show_diff(bufnr, l1, l2, new_text)
-  if not vim.api.nvim_buf_is_valid(bufnr) then
-    return
-  end
-  clear_diff()
-  local old_lines = vim.api.nvim_buf_get_lines(bufnr, l1 - 1, l2, false)
-  local new_lines = vim.split(new_text, "\n", { plain = true })
-  while #new_lines > 1 and new_lines[#new_lines] == "" do
-    table.remove(new_lines)
-  end
-  vim.api.nvim_buf_set_lines(bufnr, l1 - 1, l2, false, new_lines)
-  for i = 0, #new_lines - 1 do
-    vim.api.nvim_buf_set_extmark(bufnr, NS, l1 - 1 + i, 0, { line_hl_group = "DiffAdd" })
-  end
-  local virt = {}
-  for _, l in ipairs(old_lines) do
-    virt[#virt + 1] = { { l == "" and " " or l, "DiffDelete" } }
-  end
-  vim.api.nvim_buf_set_extmark(bufnr, NS, l1 - 1, 0, { virt_lines = virt, virt_lines_above = true })
-  D = { bufnr = bufnr, l1 = l1, new_count = #new_lines, old_lines = old_lines }
-  local o = { buffer = bufnr, silent = true, nowait = true }
-  vim.keymap.set("n", "<leader>ay", M.accept, o)
-  vim.keymap.set("n", "<leader>ad", M.reject, o)
-  pcall(vim.api.nvim_set_current_buf, bufnr)
-  pcall(vim.api.nvim_win_set_cursor, 0, { l1, 0 })
-  notify("revision ready — <leader>ay accept · <leader>ad discard")
-end
-
--- Apply the text you've highlighted in the chat window, verbatim. This is the
--- reliable path: you pick exactly which text (e.g. one of several options)
--- should replace your passage, so it never depends on the model isolating it.
-function M.apply_selection()
-  if not S.focus then
-    notify("no focus passage — start the chat from a visual selection", vim.log.levels.WARN)
-    return
-  end
-  local a = vim.fn.getpos("v")[2]
-  local b = vim.fn.getpos(".")[2]
-  if a > b then
-    a, b = b, a
-  end
-  local raw = vim.api.nvim_buf_get_lines(S.buf, a - 1, b, false)
-  local out = {}
-  for _, l in ipairs(raw) do
-    -- drop our chrome (headers / focus line / footer) and strip the render indent
-    if l ~= "You:" and l ~= "AI:" and l:sub(1, 1) ~= "▎" and l:sub(1, 2) ~= "· " then
-      out[#out + 1] = M._plainify(l:gsub("^  ", ""))
-    end
-  end
-  while #out > 0 and out[1] == "" do
-    table.remove(out, 1)
-  end
-  while #out > 0 and out[#out] == "" do
-    table.remove(out)
-  end
-  if #out == 0 then
-    notify("nothing selected to apply", vim.log.levels.WARN)
-    return
-  end
-  M.close()
-  M._show_diff(S.focus.bufnr, S.focus.l1, S.focus.l2, table.concat(out, "\n"))
-end
-
--- Ask the model for "only the revised passage" and apply it. Convenient, but a
--- local model may add commentary/options -- prefer apply_selection for control.
-function M.apply()
-  if not (S.messages and #S.messages > 1) then
-    notify("no conversation yet — chat first (<leader>ac)", vim.log.levels.WARN)
-    return
-  end
-  if not S.focus then
-    notify("no focus passage — start the chat from a visual selection", vim.log.levels.WARN)
-    return
-  end
-  if S.busy then
-    notify("still thinking…")
-    return
-  end
-  local msgs = vim.deepcopy(S.messages)
-  table.insert(msgs, { role = "user", content = APPLY_INSTR })
-  M.close()
-  notify("revising…")
-  complete(msgs, function(text, err)
-    if not text then
-      notify(err or "failed", vim.log.levels.ERROR)
-      return
-    end
-    text = text:gsub("^```%w*\n?", ""):gsub("\n?```%s*$", "")
-    local pl = {}
-    for _, l in ipairs(vim.split(text, "\n", { plain = true })) do
-      pl[#pl + 1] = M._plainify(l)
-    end
-    M._show_diff(S.focus.bufnr, S.focus.l1, S.focus.l2, table.concat(pl, "\n"))
-  end)
-end
-
-function M.accept()
-  if not D then
-    return
-  end
-  clear_diff()
-  D = nil
-  notify("applied")
-end
-
-function M.reject()
-  if not D then
-    return
-  end
-  if vim.api.nvim_buf_is_valid(D.bufnr) then
-    vim.api.nvim_buf_set_lines(D.bufnr, D.l1 - 1, D.l1 - 1 + D.new_count, false, D.old_lines)
-  end
-  clear_diff()
-  D = nil
-  notify("discarded")
 end
 
 return M
