@@ -1,6 +1,6 @@
--- Focus mode: hide everything but the writing buffer. Seeded from the main
--- config's zen-mode settings, plus a handshake with the library and no-neck-pain
--- so they don't fight over the window layout.
+-- Focus mode / centering: an on-demand, distraction-free centered view built on
+-- zen-mode's floating window (no split padding windows, so :q stays sane).
+-- Toggled with <leader>z.
 return {
   "folke/zen-mode.nvim",
   cmd = "ZenMode",
@@ -19,23 +19,11 @@ return {
       },
     },
     plugins = {
-      options = { laststatus = 0 }, -- hide the statusline in focus mode
+      options = { laststatus = 0 }, -- hide the statusline while focused
       twilight = { enabled = false },
     },
     on_open = function()
-      pcall(vim.cmd, "Neotree close")
-      if vim.g.__nnp_on then
-        pcall(vim.cmd, "NoNeckPain")
-        vim.g.__nnp_on = false
-        vim.g.__nnp_zen = true
-      end
-    end,
-    on_close = function()
-      if vim.g.__nnp_zen then
-        pcall(vim.cmd, "NoNeckPain")
-        vim.g.__nnp_on = true
-        vim.g.__nnp_zen = false
-      end
+      pcall(vim.cmd, "Neotree close") -- a float can't sit beside the tree
     end,
   },
 }
