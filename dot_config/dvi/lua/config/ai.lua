@@ -10,6 +10,8 @@ local SYSTEM = table.concat({
   "You are given the full document for context and usually a focus passage the user is asking about.",
   "Answer conversationally and specifically, considering how the passage fits the whole document.",
   "Be concise unless asked for more.",
+  "When you propose revised prose, write it plain: do NOT add Markdown formatting",
+  "(no **bold**, _italics_, headings, or bullet lists) unless the original passage already used it.",
 }, " ")
 
 -- When the user applies a revision, ask for ONLY the replacement text.
@@ -374,7 +376,10 @@ function M.apply_selection()
   for _, l in ipairs(raw) do
     -- drop our chrome (headers / focus line / footer) and strip the render indent
     if l ~= "You:" and l ~= "AI:" and l:sub(1, 1) ~= "▎" and l:sub(1, 2) ~= "· " then
-      out[#out + 1] = (l:gsub("^  ", ""))
+      l = l:gsub("^  ", "")
+      -- strip added bold markers the model likes to sprinkle in
+      l = l:gsub("%*%*(.-)%*%*", "%1"):gsub("__(.-)__", "%1")
+      out[#out + 1] = l
     end
   end
   while #out > 0 and out[1] == "" do
