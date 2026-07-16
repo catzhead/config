@@ -1,1 +1,2 @@
 .config/dvi/lua/plugins/treesitter.lua
+.config/dvi/lua/plugins/codecompanion.lua
