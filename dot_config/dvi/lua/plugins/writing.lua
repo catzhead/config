@@ -2,8 +2,9 @@
 -- edit. (Centering is on-demand via zen-mode / <leader>z, not a permanent split.)
 return {
   {
+    -- Uses Neovim's built-in treesitter + bundled markdown parsers (no
+    -- nvim-treesitter dependency).
     "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
     ft = { "markdown" },
     opts = {},
   },

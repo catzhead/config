@@ -54,6 +54,10 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.spell = true
     vim.opt_local.spelllang = "en_us"
     vim.opt_local.textwidth = 0
+    -- Neovim's built-in treesitter highlighter (bundled markdown parsers). We
+    -- don't use nvim-treesitter — its archived master branch crashes on newer
+    -- Neovim during markdown injection parsing.
+    pcall(vim.treesitter.start)
     -- prose-aware vertical motion: move by display line
     local o = { buffer = ev.buf, silent = true }
     vim.keymap.set({ "n", "x" }, "j", "gj", o)
