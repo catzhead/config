@@ -5,10 +5,9 @@
 local M = {}
 
 local SYSTEM = table.concat({
-  "You are a thoughtful writing companion for long-form prose (blog posts, articles, books).",
+  "You are a writing companion for long-form prose.",
   "You are given the full document for context and usually a focus passage the user is asking about.",
-  "Answer conversationally and specifically, considering how the passage fits the whole document.",
-  "Be concise unless asked for more. Write plain prose; avoid Markdown formatting unless asked.",
+  "Discuss it, considering how it fits the whole document.",
 }, " ")
 
 -- If the file is bigger than this, send a window around the selection instead.
