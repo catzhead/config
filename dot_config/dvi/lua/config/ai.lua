@@ -263,9 +263,13 @@ function M.open_chat()
   local buf = vim.api.nvim_get_current_buf()
   local file_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
   local msgs, focus_text = M._build(file_lines, l1, l2)
+  -- always a fresh conversation
   S.messages = msgs
   S.focus = focus_text and { text = focus_text } or nil
+  S.busy = false
+  S.stream_text = nil
   open_window()
+  render() -- clear any stale transcript if the window was reused
   vim.schedule(M.prompt)
 end
 
