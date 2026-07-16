@@ -11,7 +11,8 @@ local SYSTEM = table.concat({
   "Answer conversationally and specifically, considering how the passage fits the whole document.",
   "Be concise unless asked for more.",
   "When you propose revised prose, write it plain: do NOT add Markdown formatting",
-  "(no **bold**, _italics_, headings, or bullet lists) unless the original passage already used it.",
+  "(no **bold**, _italics_, headings, bullet lists, checkboxes, or blockquotes)",
+  "unless the original passage already used it.",
 }, " ")
 
 -- When the user applies a revision, ask for ONLY the replacement text.
@@ -55,6 +56,17 @@ local function with_model(cb)
       cb(id)
     end)
   end)
+end
+
+-- Strip Markdown formatting the model tends to sprinkle into a rewrite, so an
+-- applied revision lands as plain prose. Pure -> testable.
+function M._plainify(l)
+  l = l:gsub("^(%s*)>%s+", "%1") -- blockquote
+  l = l:gsub("^(%s*)[-*+]%s+%[[ xX]%]%s+", "%1") -- task checkbox (before bullet)
+  l = l:gsub("^(%s*)[-*+]%s+", "%1") -- bullet
+  l = l:gsub("^(%s*)%d+%.%s+", "%1") -- ordered list
+  l = l:gsub("%*%*(.-)%*%*", "%1"):gsub("__(.-)__", "%1") -- bold
+  return l
 end
 
 -- Parse one SSE line into a content delta (or nil). Pure -> testable.
@@ -378,10 +390,7 @@ function M.apply_selection()
   for _, l in ipairs(raw) do
     -- drop our chrome (headers / focus line / footer) and strip the render indent
     if l ~= "You:" and l ~= "AI:" and l:sub(1, 1) ~= "▎" and l:sub(1, 2) ~= "· " then
-      l = l:gsub("^  ", "")
-      -- strip added bold markers the model likes to sprinkle in
-      l = l:gsub("%*%*(.-)%*%*", "%1"):gsub("__(.-)__", "%1")
-      out[#out + 1] = l
+      out[#out + 1] = M._plainify(l:gsub("^  ", ""))
     end
   end
   while #out > 0 and out[1] == "" do
@@ -423,7 +432,11 @@ function M.apply()
       return
     end
     text = text:gsub("^```%w*\n?", ""):gsub("\n?```%s*$", "")
-    M._show_diff(S.focus.bufnr, S.focus.l1, S.focus.l2, text)
+    local pl = {}
+    for _, l in ipairs(vim.split(text, "\n", { plain = true })) do
+      pl[#pl + 1] = M._plainify(l)
+    end
+    M._show_diff(S.focus.bufnr, S.focus.l1, S.focus.l2, table.concat(pl, "\n"))
   end)
 end
 
