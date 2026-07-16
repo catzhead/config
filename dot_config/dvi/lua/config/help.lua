@@ -2,7 +2,7 @@
 -- rendered from config.keymaps.specs so it never drifts from the real bindings.
 local M = {}
 
-local GROUP_ORDER = { "Navigate", "Cross-reference", "Sheets/Order", "Focus", "Git", "Help" }
+local GROUP_ORDER = { "Navigate", "Cross-reference", "Sheets/Order", "Focus", "Git", "AI", "Help" }
 
 local function build_lines()
   local specs = require("config.keymaps").specs

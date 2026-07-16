@@ -53,6 +53,11 @@ M.specs = {
   { group = "Git", lhs = "gp", desc = "In the library: push", display = true },
   { group = "Git", lhs = "gg", desc = "In the library: commit AND push", display = true },
 
+  -- AI (local LLM via LM Studio; loads codecompanion on first use)
+  { group = "AI", lhs = "<leader>ac", rhs = "<cmd>CodeCompanionChat Toggle<CR>", desc = "Chat (adds selection in visual mode)", mode = { "n", "v" } },
+  { group = "AI", lhs = "<leader>ar", rhs = ":CodeCompanion ", desc = "Rewrite selection (type an instruction)", mode = "v", silent = false },
+  { group = "AI", lhs = "<leader>aa", rhs = "<cmd>CodeCompanionActions<CR>", desc = "AI actions palette", mode = { "n", "v" } },
+
   -- Help
   { group = "Help", lhs = "<leader>?", rhs = function() require("config.help").open() end, desc = "Show this cheat sheet" },
 }
@@ -65,7 +70,7 @@ function M.apply()
         by_ft[s.ft] = by_ft[s.ft] or {}
         table.insert(by_ft[s.ft], s)
       else
-        vim.keymap.set(s.mode or "n", s.lhs, s.rhs, { desc = "dvi: " .. s.desc, silent = true })
+        vim.keymap.set(s.mode or "n", s.lhs, s.rhs, { desc = "dvi: " .. s.desc, silent = s.silent ~= false })
       end
     end
   end
