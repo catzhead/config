@@ -22,8 +22,12 @@ return {
             },
             schema = {
               model = {
-                -- set $LMSTUDIO_MODEL to the id LM Studio shows at /v1/models
-                default = os.getenv("LMSTUDIO_MODEL") or "set-LMSTUDIO_MODEL",
+                -- Leave unset to let codecompanion auto-pick the model LM Studio
+                -- has loaded (fetched from /v1/models); in a chat, `ga` lists and
+                -- switches between loaded models. $LMSTUDIO_MODEL forces a specific
+                -- id if you want one. (nil here means the key is absent, so the
+                -- adapter's built-in model fetcher is kept.)
+                default = os.getenv("LMSTUDIO_MODEL"),
               },
             },
           })
