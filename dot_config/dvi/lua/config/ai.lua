@@ -43,6 +43,17 @@ local function with_model(cb)
   end)
 end
 
+-- Hide a reasoning model's chain-of-thought (<think>…</think>) so the chat
+-- shows only the actual answer. Pure -> testable.
+function M._visible(s)
+  s = s:gsub("<think>.-</think>", ""):gsub("<thinking>.-</thinking>", "")
+  local ti = s:find("<think>") or s:find("<thinking>") -- unclosed (mid-stream)
+  if ti then
+    s = s:sub(1, ti - 1)
+  end
+  return (s:gsub("^%s+", ""))
+end
+
 -- Parse one SSE line into a content delta (or nil). Pure -> testable.
 function M._parse_delta(line)
   line = line:gsub("\r$", "")
@@ -149,13 +160,13 @@ local function render()
   end
   if S.busy then
     table.insert(lines, "AI:")
-    local t = S.stream_text
-    if t and t ~= "" then
+    local t = S.stream_text and M._visible(S.stream_text) or ""
+    if t ~= "" then
       for _, l in ipairs(vim.split(t, "\n", { plain = true })) do
         table.insert(lines, "  " .. l)
       end
     else
-      table.insert(lines, "  …")
+      table.insert(lines, "  (thinking…)")
     end
   end
   if not S.busy then
@@ -182,8 +193,8 @@ local function open_window()
   -- neutral filetype keeps render-markdown, the gradient and spell out of the chat
   vim.bo[S.buf].filetype = "dvichat"
   vim.bo[S.buf].bufhidden = "hide"
-  local w = math.min(80, vim.o.columns - 8)
-  local h = math.min(24, vim.o.lines - 6)
+  local w = math.min(110, math.floor(vim.o.columns * 0.8))
+  local h = math.min(vim.o.lines - 4, math.floor(vim.o.lines * 0.85))
   S.win = vim.api.nvim_open_win(S.buf, true, {
     relative = "editor",
     width = w,
@@ -225,7 +236,7 @@ function M.prompt()
     end, function(ok, err)
       table.insert(S.messages, {
         role = "assistant",
-        content = ok and S.stream_text or ("[error] " .. (err or "unknown")),
+        content = ok and M._visible(S.stream_text) or ("[error] " .. (err or "unknown")),
       })
       S.stream_text = nil
       S.busy = false
