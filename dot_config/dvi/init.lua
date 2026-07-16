@@ -63,6 +63,20 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- In focus mode, zen-mode's float makes a bare :q merely "leave focus", so it
+-- would take a second :q to quit. When a real quit is issued (:q / :wq / ZZ)
+-- while focused, quit the editor instead. (<leader>z toggles zen without a
+-- :quit, so it doesn't trip this.)
+vim.api.nvim_create_autocmd("QuitPre", {
+  callback = function()
+    if vim.g.__dvi_zen then
+      vim.schedule(function()
+        pcall(vim.cmd, "quitall")
+      end)
+    end
+  end,
+})
+
 -- On launch: open the current directory (or the given dir) as the library.
 -- `dvi` -> cwd; `dvi some/dir` -> that dir; `dvi file.md` -> that file (library
 -- still reachable via <leader>e).

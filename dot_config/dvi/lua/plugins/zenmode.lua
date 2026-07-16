@@ -23,7 +23,11 @@ return {
       twilight = { enabled = false },
     },
     on_open = function()
+      vim.g.__dvi_zen = true
       pcall(vim.cmd, "Neotree close") -- a float can't sit beside the tree
+    end,
+    on_close = function()
+      vim.g.__dvi_zen = false
     end,
   },
 }
