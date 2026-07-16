@@ -55,8 +55,9 @@ M.specs = {
 
   -- AI (local LLM via LM Studio; custom lua/config/ai.lua)
   { group = "AI", lhs = "<leader>ac", rhs = "<cmd>lua require('config.ai').open_chat()<CR>", desc = "Chat about the selection / file (i=ask, q=close, gx=clear)", mode = { "n", "v" } },
-  { group = "AI", lhs = "<leader>ar", rhs = "<cmd>lua require('config.ai').apply()<CR>", desc = "Apply the revision to the selection (inline diff)" },
-  { group = "AI", lhs = "<leader>ay", desc = "Accept the pending revision", display = true },
+  { group = "AI", lhs = "<CR>", desc = "In chat (visual): apply the selected text to your passage", display = true },
+  { group = "AI", lhs = "<leader>ar", rhs = "<cmd>lua require('config.ai').apply()<CR>", desc = "Auto-apply: ask model for only the revision (less reliable locally)" },
+  { group = "AI", lhs = "<leader>ay", desc = "Accept the pending revision (inline diff)", display = true },
   { group = "AI", lhs = "<leader>ad", desc = "Discard the pending revision", display = true },
 
   -- Help

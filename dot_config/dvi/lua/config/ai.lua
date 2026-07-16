@@ -200,6 +200,10 @@ local function render()
       table.insert(lines, "  …")
     end
   end
+  if not S.busy then
+    table.insert(lines, "")
+    table.insert(lines, "· i ask · select text + <CR> applies it · gx clear · q close")
+  end
   if #lines == 0 then
     lines = { "(press i to ask, q to close)" }
   end
@@ -239,6 +243,9 @@ local function open_window()
   vim.keymap.set("n", "q", M.close, o)
   vim.keymap.set("n", "<Esc>", M.close, o)
   vim.keymap.set("n", "gx", M.reset, o)
+  -- select a revision in the chat, then <leader>ar (or <CR>) applies exactly it
+  vim.keymap.set("x", "<leader>ar", M.apply_selection, o)
+  vim.keymap.set("x", "<CR>", M.apply_selection, o)
   render()
 end
 
@@ -349,6 +356,43 @@ function M._show_diff(bufnr, l1, l2, new_text)
   notify("revision ready — <leader>ay accept · <leader>ad discard")
 end
 
+-- Apply the text you've highlighted in the chat window, verbatim. This is the
+-- reliable path: you pick exactly which text (e.g. one of several options)
+-- should replace your passage, so it never depends on the model isolating it.
+function M.apply_selection()
+  if not S.focus then
+    notify("no focus passage — start the chat from a visual selection", vim.log.levels.WARN)
+    return
+  end
+  local a = vim.fn.getpos("v")[2]
+  local b = vim.fn.getpos(".")[2]
+  if a > b then
+    a, b = b, a
+  end
+  local raw = vim.api.nvim_buf_get_lines(S.buf, a - 1, b, false)
+  local out = {}
+  for _, l in ipairs(raw) do
+    -- drop our chrome (headers / focus line / footer) and strip the render indent
+    if l ~= "You:" and l ~= "AI:" and l:sub(1, 1) ~= "▎" and l:sub(1, 2) ~= "· " then
+      out[#out + 1] = (l:gsub("^  ", ""))
+    end
+  end
+  while #out > 0 and out[1] == "" do
+    table.remove(out, 1)
+  end
+  while #out > 0 and out[#out] == "" do
+    table.remove(out)
+  end
+  if #out == 0 then
+    notify("nothing selected to apply", vim.log.levels.WARN)
+    return
+  end
+  M.close()
+  M._show_diff(S.focus.bufnr, S.focus.l1, S.focus.l2, table.concat(out, "\n"))
+end
+
+-- Ask the model for "only the revised passage" and apply it. Convenient, but a
+-- local model may add commentary/options -- prefer apply_selection for control.
 function M.apply()
   if not (S.messages and #S.messages > 1) then
     notify("no conversation yet — chat first (<leader>ac)", vim.log.levels.WARN)
