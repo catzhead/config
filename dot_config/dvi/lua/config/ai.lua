@@ -43,14 +43,28 @@ local function with_model(cb)
   end)
 end
 
--- Hide a reasoning model's chain-of-thought (<think>…</think>) so the chat
--- shows only the actual answer. Pure -> testable.
+-- Hide a reasoning model's chain-of-thought so the chat shows only the answer.
+-- Handles <think>…</think> and the channel style <|channel>thought…<channel|>.
+-- Pure -> testable.
 function M._visible(s)
+  -- <think> / <thinking> style
   s = s:gsub("<think>.-</think>", ""):gsub("<thinking>.-</thinking>", "")
   local ti = s:find("<think>") or s:find("<thinking>") -- unclosed (mid-stream)
   if ti then
     s = s:sub(1, ti - 1)
   end
+  -- channel style: reasoning between <|channel…  and  …channel|>; answer follows
+  local co = s:find("<|channel", 1, true)
+  if co then
+    local cc = s:find("channel|>", co, true)
+    if cc then
+      s = s:sub(1, co - 1) .. s:sub(cc + #"channel|>")
+    else
+      s = s:sub(1, co - 1) -- reasoning still streaming
+    end
+  end
+  -- drop any leftover pipe-delimited special tokens (<|x|>, <|x>, <x|>)
+  s = s:gsub("<|[^<>]-|>", ""):gsub("<|[^<>]->", ""):gsub("<[^<>]-|>", "")
   return (s:gsub("^%s+", ""))
 end
 
