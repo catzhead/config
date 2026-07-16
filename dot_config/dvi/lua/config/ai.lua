@@ -223,7 +223,9 @@ local function open_window()
     return
   end
   S.buf = vim.api.nvim_create_buf(false, true)
-  vim.bo[S.buf].filetype = "markdown"
+  -- a neutral filetype: keep render-markdown, the paragraph gradient, spell and
+  -- the markdown autocmds out of the chat window (it's a UI, not a document)
+  vim.bo[S.buf].filetype = "dvichat"
   vim.bo[S.buf].bufhidden = "hide"
   local w = math.min(80, vim.o.columns - 8)
   local h = math.min(24, vim.o.lines - 6)
