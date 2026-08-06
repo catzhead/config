@@ -5,7 +5,7 @@
 local M = {}
 
 local ns = vim.api.nvim_create_namespace("dvi_gradient")
-M.enabled = true
+M.enabled = false -- off by default; toggle with <leader>tw
 M.levels = 0
 
 -- Blend fg toward bg. a = 0 keeps fg, a = 1 becomes bg.
