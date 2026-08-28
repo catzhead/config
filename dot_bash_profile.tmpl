@@ -29,6 +29,14 @@ alias wks='cd ~/Workspace'
 
 source ~/.bash-powerline.sh
 {{ if eq .chezmoi.os "darwin" }}
+# Vane — self-hosted search UI on :3000, data in the vane-data volume.
+# Needs `podman machine start` first. Reuses the container across calls.
+vane() {
+  podman start vane 2>/dev/null || podman run -d -p 3000:3000 \
+    -v vane-data:/home/vane/data --name vane \
+    docker.io/itzcrazykns1337/vane:latest
+}
+
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
 
