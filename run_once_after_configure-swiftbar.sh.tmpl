@@ -1,0 +1,11 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+# Point SwiftBar at the chezmoi-managed plugin folder so it never asks
+# for one; the plugins themselves are symlinks into the infra checkout
+# (Library/Application Support/SwiftBar/Plugins/). Runs once per machine.
+set -euo pipefail
+dir="$HOME/Library/Application Support/SwiftBar/Plugins"
+mkdir -p "$dir"
+defaults write com.ameba.SwiftBar PluginDirectory "$dir"
+command -v swiftbar >/dev/null 2>&1 || [ -d /Applications/SwiftBar.app ] || echo "swiftbar: not installed (brew install swiftbar jq)" >&2
+{{- end }}
