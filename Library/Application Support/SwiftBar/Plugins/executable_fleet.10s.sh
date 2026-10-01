@@ -12,7 +12,7 @@
 # <swiftbar.environment>[]</swiftbar.environment>
 
 PROM="http://100.116.37.48:18009"
-GRAFANA="http://100.116.37.48:18010/d/fleet"
+GRAFANA="https://levitate-sim.tail19e6f5.ts.net:18010/d/fleet"
 PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 q() { curl -s --max-time 4 -G "$PROM/api/v1/query" --data-urlencode "query=$1" 2>/dev/null \
