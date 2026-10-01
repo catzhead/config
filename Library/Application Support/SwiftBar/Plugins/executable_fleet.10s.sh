@@ -26,8 +26,8 @@ cpu="$(q '100 * (1 - avg by (host) (rate(node_cpu_seconds_total{mode="idle"}[2m]
 if [ -z "$cpu" ]; then
   echo "| sfimage=server.rack.slash"
   echo "---"
-  echo "Prometheus unreachable | color=gray"
-  echo "Is the Mac on the company tailnet? | color=gray"
+  echo "Prometheus unreachable"
+  echo "Is the Mac on the company tailnet?"
   echo "Retry | refresh=true"
   exit 0
 fi
@@ -48,16 +48,16 @@ while read -r host v; do
 done <<< "$cpu"
 echo "| sfimage=$icon"
 echo "---"
-echo "Fleet — CPU · mem · disk · load/core | size=11 color=gray"
+echo "Fleet — CPU · mem · disk · load/core | size=11"
 while read -r host v; do
   [ -n "$host" ] || continue
   m="$(echo "$mem"  | awk -v h="$host" '$1==h{print $2}')"
   d="$(echo "$disk" | awk -v h="$host" '$1==h{print $2}')"
   l="$(echo "$load" | awk -v h="$host" '$1==h{print $2}')"
   u="$(echo "$up"   | awk -v h="$host" '$1==h{print $2}')"
-  if [ "${u:-0}" != "1" ]; then echo "$host  DOWN | color=red font=Menlo"; continue; fi
-  printf '%-16s cpu %3s%%  mem %3s%%  disk %3s%%  load %.2f | font=Menlo color=%s\n' \
-    "$host" "$(pct "$v")" "$(pct "${m:-0}")" "$(pct "${d:-0}")" "${l:-0}" "$(color "$v")"
+  if [ "${u:-0}" != "1" ]; then echo "$host  DOWN | font=Menlo"; continue; fi
+  printf '%-16s cpu %3s%%  mem %3s%%  disk %3s%%  load %.2f | font=Menlo\n' \
+    "$host" "$(pct "$v")" "$(pct "${m:-0}")" "$(pct "${d:-0}")" "${l:-0}"
 done <<< "$cpu"
 echo "---"
 echo "Open Fleet dashboard | href=$GRAFANA"
