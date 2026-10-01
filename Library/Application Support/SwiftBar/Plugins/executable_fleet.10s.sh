@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SwiftBar plugin: the Fleet dashboard's headline numbers in the Mac menu
-# bar. Polls Prometheus on levitate-sim (company tailnet) every minute —
-# the "1m" in the filename is the refresh interval. Shows a dash when the
+# bar. Polls Prometheus on levitate-sim (company tailnet) every 10 s —
+# the "10s" in the filename is the refresh interval. Shows a dash when the
 # Mac is not on the company tailnet. Managed by
 # the chezmoi dotfiles (catzhead/config); `chezmoi update` installs it on every Mac.
 #
