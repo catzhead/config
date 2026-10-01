@@ -24,7 +24,7 @@ pct() { printf '%.0f' "$1"; }
 
 cpu="$(q '100 * (1 - avg by (host) (rate(node_cpu_seconds_total{mode="idle"}[2m])))')"
 if [ -z "$cpu" ]; then
-  echo "fleet –"
+  echo "| sfimage=server.rack.slash"
   echo "---"
   echo "Prometheus unreachable | color=gray"
   echo "Is the Mac on the company tailnet? | color=gray"
@@ -36,16 +36,17 @@ disk="$(q '100 * (1 - node_filesystem_avail_bytes{mountpoint="/",fstype!="rootfs
 load="$(q 'node_load1 / on (host) count by (host) (node_cpu_seconds_total{mode="idle"})')"
 up="$(q 'up{job="node"}')"
 
-# Menu bar line: one entry per host, worst colour wins.
-title=""; worst=green
+# Menu bar: a monochrome icon only (SF Symbols render as template images,
+# so they follow the bar's light/dark colour). The icon changes when any
+# host is hot (>=70% CPU) or down; every number lives in the dropdown.
+icon="server.rack"
 while read -r host v; do
   [ -n "$host" ] || continue
   u="$(echo "$up" | awk -v h="$host" '$1==h{print $2}')"
-  if [ "${u:-0}" != "1" ]; then title+="$(short "$host") down  "; worst=red; continue; fi
-  c="$(color "$v")"; [ "$c" = red ] && worst=red; [ "$c" = orange ] && [ "$worst" != red ] && worst=orange
-  title+="$(short "$host") $(pct "$v")%  "
+  if [ "${u:-0}" != "1" ]; then icon="xmark.octagon"; break; fi
+  [ "${v%.*}" -ge 70 ] && icon="exclamationmark.triangle"
 done <<< "$cpu"
-echo "⬢ ${title% } | color=$worst font=Menlo size=12"
+echo "| sfimage=$icon"
 echo "---"
 echo "Fleet — CPU · mem · disk · load/core | size=11 color=gray"
 while read -r host v; do
