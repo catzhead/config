@@ -55,6 +55,18 @@ set -g @catppuccin_window_current_text " #W"
 set -g @catppuccin_host_text "local"
 {{ end -}}
 
+# Window names across ssh. A window running ssh would just say "ssh":
+# the servers publish "<tailnet name>:<window>" (e.g.
+# levitate-dev-01:claude) as the terminal title, and the Mac shows that
+# title instead. Tailnet name, not hostname: levitate-dev-01 is sim-fsn.
+{{ if eq .chezmoi.os "darwin" -}}
+setw -g automatic-rename-format "#{?#{==:#{pane_current_command},ssh},#{pane_title},#{pane_current_command}}"
+{{ else -}}
+run-shell 'tmux set -g @tab_host "$(tailscale status --json 2>/dev/null | jq -r ".Self.DNSName // empty" | cut -d. -f1 | grep . || hostname -s)"'
+set -g set-titles on
+set -g set-titles-string "#{@tab_host}:#W"
+{{ end -}}
+
 # Load catppuccin
 run ~/.config/tmux/plugins/tmux/catppuccin.tmux
 
